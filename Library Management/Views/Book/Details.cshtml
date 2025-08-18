@@ -56,7 +56,8 @@
     <a asp-action="Index" asp-route-id="@Model.BookId" class="btn btn-outline-primary">
         <i class="bi bi-arrow-left"></i> Close
     </a>
-    <a asp-action="Edit" asp-route-id="@Model.BookId" class="btn btn-primary">
+    <button type="button" class="btn btn-primary" onclick="openAddCopyModal('@Model.BookId')">
         <i class="bi bi-pencil-square"></i> Manage Copies
-    </a>
+    </button>
+
 </div>

@@ -1,0 +1,37 @@
+﻿<div class="modal fade" id="manageCopiesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Manage Copies for @Model.BookId</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    @foreach (var copy in Model.Copies)
+                    {
+                        <li>
+                            ID: @copy.Id - Condition: @copy.Condition - Source: @copy.Source
+                            @if (copy.PulloutDate == null)
+                            {
+                                <button class="btn btn-sm btn-warning pullout-btn" data-copyid="@copy.Id">Pullout</button>
+                            }
+                            else
+                            {
+                                <span class="text-muted">(Pulled out)</span>
+                            }
+                        </li>
+                    }
+                </ul>
+                <hr />
+                <form id="addCopyForm">
+                    <input type="hidden" name="bookId" value="@Model.BookId" />
+                    <input type="text" name="coverImageUrl" placeholder="Cover URL" required />
+                    <input type="text" name="condition" placeholder="Condition" required />
+                    <input type="text" name="source" placeholder="Source" required />
+                    <button type="submit" class="btn btn-success btn-sm">Add Copy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    

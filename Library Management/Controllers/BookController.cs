@@ -1,4 +1,5 @@
 ﻿using Library_Management.Models;
+using Library_Management_Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library_Management.Controllers
@@ -11,18 +12,32 @@ namespace Library_Management.Controllers
             return View(books);
         }
 
-        public IActionResult Add()
+        public IActionResult AddModal()
         {
-            return View();
+            return PartialView("_AddBookPartial");
         }
 
-     
+        [HttpPost]
+        public IActionResult Add(AddBookViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+            BookService.Instance.AddBook(vm);
+
+            return Ok();
+        }
+
+
         public IActionResult EditModal(Guid id)
         {
             var editBookViewModel = BookService.Instance.GetBookById(id);
             if (editBookViewModel == null) return NotFound();
 
-          
+
             return PartialView("_EditBookPartial", editBookViewModel);
         }
 
@@ -31,11 +46,9 @@ namespace Library_Management.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // If model state is not valid, you can return a view with validation errors
                 return BadRequest(ModelState);
             }
 
-            // Assuming BookService has a method to update the book
             BookService.Instance.UpdateBook(vm);
 
             return Ok();
@@ -43,23 +56,35 @@ namespace Library_Management.Controllers
 
         public IActionResult DeleteModal(Guid id)
         {
-            
-            return PartialView("_DeletePartial");
+            var book = BookService.Instance.GetBookById(id);
+           
+            return PartialView("_DeletePartial", id);
         }
 
         [HttpDelete]
         public IActionResult Delete(Guid id)
         {
-            // Assuming BookService has a method to delete the book
-            BookService.Instance.DeleteBook(id);
-            return Ok();
+            try
+            {
+                BookService.Instance.DeleteBook(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
+
 
         public IActionResult Details(Guid id)
         {
             var book = BookService.Instance.GetBooks().First(b => b.BookId == id);
             return View(book);
         }
+
+        
+        
+
 
 
     }
