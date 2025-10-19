@@ -1,267 +1,146 @@
 ﻿@model IEnumerable<Library_Management.Models.BookListViewModel>
 
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 @{
-
     ViewData["Title"] = "Books";
-
 }
 
-<h1 class="mb-4 fw-bold">Book Library</h1>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-    <div class="col">
-        <a href="javascript:void(0);"
-           onclick="openAddModal()"
-           class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center text-decoration-none add-card">
-            <div class="text-center">
-                <i class="bi bi-plus-circle" style="font-size: 3rem; color: #6c757d;"></i>
-                <p class="mt-2 text-muted">Add Book</p>
+@* The header/navbar is correctly removed here. *@
 
-            </div>
-        </a>
-    </div>
+<div class="container py-4">
+    <h1 class="mb-4 fw-bold text-pink-dark d-flex align-items-center">
+        <i class="bi bi-book-half me-2"></i> Book Library
+    </h1>
 
-    @foreach (var book in Model)
-
-    {
+    @* ⭐ ADJUSTMENT: Changed back to row-cols-lg-5 to make the cards smaller/fit more! ⭐ *@
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         <div class="col">
-            <div class="card book-card h-100 shadow-sm border-0">
-
-                <div class="book-actions">
-                    <a href="javascript:void(0);"
-                       class="action-btn"
-                       title="Edit"
-                       onclick="openEditModal('@book.BookId')">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <a asp-action="Details" asp-route-id="@book.BookId" class="action-btn" title="Details" />
-                    <a href="javascript:void(0);"
-                       onclick="openDeleteModal('/Book/DeleteModal?id=@book.BookId', 'Delete Book')"
-                       class="action-btn"
-                       title="Delete">
-                        <i class="bi bi-trash"></i>
-                    </a>
-
+            <a href="javascript:void(0);" onclick="openAddModal()"
+               class="card h-100 add-card d-flex align-items-center justify-content-center text-decoration-none bg-white hover-lift">
+                <div class="text-center p-4">
+                    <i class="bi bi-plus add-card-icon overlap-plus-icon"></i>
+                    <p class="mt-2 fw-semibold add-card-text">Add New Book</p>
                 </div>
-
-                <img src="@book.CoverImageUrl" class="card-img-top" alt="@book.Title" style="height: 200px; object-fit: cover; background-color: silver;">
-
-                <div class="card-body">
-                    <h6 class="card-title text-truncate" title="@book.Title">@book.Title</h6>
-                    <p class="text-muted mb-1 text-truncate">
-                        <strong>Author:</strong> @book.AuthorName
-                    </p>
-                    <p class="mb-0 small text-secondary">
-
-                        @book.Genre | Copies: @book.AvailableCopies / @book.TotalCopies
-                    </p>
-                </div>
-            </div>
+            </a>
         </div>
 
-    }
-</div>
+        @foreach (var book in Model)
+        {
+            <div class="col">
+                <div class="card book-card h-100 rounded-4 overflow-hidden border-0 hover-lift position-relative">
+                    <a href="javascript:void(0);" onclick="openDetailsModal('@book.BookId')" class="book-link">
+                        <img src="@book.CoverImageUrl"
+                             class="card-img-top book-cover"
+                             alt="@book.Title"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x200/FADADD/333?text=No+Cover';" />
+                    </a>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+                    <div class="book-actions">
+                        <a href="javascript:void(0);" class="action-btn edit-btn" title="Edit Book"
+                           onclick="openEditModal('@book.BookId')">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="action-btn delete-btn" title="Delete Book"
+                           onclick="openDeleteModal('/Book/DeleteModal?id=@book.BookId')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
 
-                ...
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+                        <div>
+                            <h6 class="card-title text-truncate fw-bold book-title-text" title="@book.Title">
+                                @book.Title
+                            </h6>
+                            <p class="text-muted mb-1 text-truncate small">
+                                Author: <strong>@book.AuthorName</strong>
+                            </p>
+                        </div>
+                        <p class="mt-2 small text-secondary">
+                            @book.Genre | Copies: <strong>@book.AvailableCopies</strong> / <strong>@book.TotalCopies</strong>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+        }
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel" data-bs-title="Loading..." style="color: white;">Loading...</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-5">
+                    <i class="bi bi-arrow-clockwise spin" style="font-size: 2rem; color: var(--color-pink);"></i>
+                    <p class="mt-3 text-muted">Loading content...</p>
+                </div>
             </div>
+            <div id="modal-content-placeholder"></div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
+        function showMessage(message) { alert(message); }
 
-        function openAddModal() {
-
-            fetch(`/Book/AddModal`)
-
-                    .then(response => {
-
-                        if (!response.ok) {
-
-                            throw new Error('Error loading add form.');
-
-                        }
-
-                        return response.text();
-
-                    })
-
-                    .then(html => {
-
-                        document.querySelector('#exampleModal .modal-content').innerHTML = html;
-
-                        // Show the Bootstrap modal (v5 API)3
-
-                        let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-
-                        modal.show();
-
-                    })
-
-                    .catch(error => {
-
-                        alert(error.message);
-
-                        console.error(error);
-
-                    });
-
-            }
-
-
-
-            function openEditModal(bookId) {
-
-                fetch(`/Book/EditModal?id=${encodeURIComponent(bookId)}`)
-
-                    .then(response => {
-
-                        if (!response.ok) {
-
-                            throw new Error('Error loading edit form.');
-
-                        }
-
-                        return response.text();
-
-                    })
-
-                    .then(html => {
-
-                        document.querySelector('#exampleModal .modal-content').innerHTML = html;
-
-                        let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-
-                        modal.show();
-
-                    })
-
-                    .catch(error => {
-
-                        alert(error.message);
-
-                        console.error(error);
-
-                    });
-
-            }
-
-                    function openAddCopyModal(bookId) {
-            fetch(`/Book/AddCopyModal?bookId=${encodeURIComponent(bookId)}`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Error loading copy form.');
-                    return response.text();
-                })
-                .then(html => {
-                    document.querySelector('#exampleModal .modal-content').innerHTML = html;
-
-                    let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-                    modal.show();
-                })
-                .catch(error => {
-                    alert(error.message);
-                    console.error(error);
-                });
+        function showModal(html, title = 'Book Details') {
+            const modal = document.getElementById('exampleModal');
+            modal.querySelector('.modal-title').textContent = title;
+            modal.querySelector('.modal-content').innerHTML = html;
+            new bootstrap.Modal(modal).show();
         }
 
+        function openAddModal() { fetch(`/Book/AddModal`).then(res => res.text()).then(html => showModal(html, 'Add New Book')).catch(() => showMessage('Error loading Add Book form.')); }
 
-        function openDeleteModal(url, title) {
+        function openEditModal(bookId) { fetch(`/Book/EditModal?id=${bookId}`).then(res => res.text()).then(html => showModal(html, 'Edit Book')).catch(() => showMessage('Error loading Edit Book form.')); }
 
-            $.ajax({
+        function openDetailsModal(bookId) { fetch(`/Book/Details?id=${bookId}`).then(res => res.text()).then(html => showModal(html, 'Book Details')).catch(() => showMessage('Error loading book details.')); }
 
-                url: url,
-
-                type: 'GET',
-
-                success: function (data) {
-
-                    $('#exampleModal .modal-content').html(data);
-
-                    $('#exampleModalLabel').text(title);
-
-                    $('#exampleModal').modal('show');
-
-                },
-
-                error: function () {
-
-                    alert('Error loading details.');
-
-                }
-
-            });
-
-        }
-
-        function confirmDelete(id) {
-            fetch(`/Book/Delete/${id}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert('Failed to delete the book.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred during deletion.');
-            });
-        }
+        function openDeleteModal(url) { fetch(url).then(res => res.text()).then(html => showModal(html, 'Confirm Deletion')).catch(() => showMessage('Error loading delete confirmation.')); }
 
         document.addEventListener("submit", function (e) {
-
             const form = e.target;
-
-            if (form.matches("#editBookForm") || form.matches("#addBookForm")) {
-
+            if (form.matches("#editBookForm") || form.matches("#addBookForm") || form.matches("#deleteBookForm") || form.matches("#addReviewForm")) {
                 e.preventDefault();
-
                 const formData = new FormData(form);
+                const params = new URLSearchParams(formData);
 
-                fetch(form.action, {
-
-                    method: form.method,
-
-                    body: new URLSearchParams(formData)
-
-                })
-
-                .then(response => {
-
-                    if (!response.ok) {
-
-                        throw new Error('Network response was not ok');
-
-                    }
-
-                    location.reload();
-
-                })
-
-                .catch(error => {
-
-                    alert('Error saving changes: ' + error.message);
-
-                });
-
+                fetch(form.action, { method: form.method, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: params })
+                    .then(res => {
+                        if (form.matches("#addReviewForm")) {
+                            return res.json().then(result => {
+                                if (result.success) {
+                                    showMessage('Review submitted successfully!');
+                                    bootstrap.Modal.getInstance(document.getElementById('exampleModal'))?.hide();
+                                    openDetailsModal(formData.get('BookId'));
+                                } else { showMessage(`Error submitting review: ${result.message || 'Check inputs.'}`); }
+                            });
+                        } else {
+                            if (res.ok) { bootstrap.Modal.getInstance(document.getElementById('exampleModal'))?.hide(); location.reload(); }
+                            else { showMessage("Error saving changes. Check your inputs."); }
+                        }
+                    }).catch(() => showMessage("Form submission failed."));
             }
+        });
 
+        document.addEventListener("click", function (e) {
+            if (e.target.matches('#ratingStars i')) {
+                const starContainer = document.getElementById('ratingStars');
+                const ratingInput = document.getElementById('ratingInput');
+                const clickedRating = parseInt(e.target.dataset.rating);
+                ratingInput.value = clickedRating;
+                starContainer.querySelectorAll('i').forEach(star => {
+                    const starRating = parseInt(star.dataset.rating);
+                    star.classList.toggle('rated', starRating <= clickedRating);
+                    star.classList.toggle('pink-theme', starRating <= clickedRating);
+                    star.classList.toggle('text-muted', starRating > clickedRating);
+                });
+            }
         });
     </script>
-
 }

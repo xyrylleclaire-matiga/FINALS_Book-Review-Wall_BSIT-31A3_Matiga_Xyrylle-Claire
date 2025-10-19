@@ -1,7 +1,10 @@
-﻿namespace Library_Management.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Library_Management.Models
 {
     public class BookListViewModel
     {
+        [Key]
         public Guid BookId { get; set; }
         public string? Title { get; set; } = default!;
         public string? ISBN { get; set; } = default!;

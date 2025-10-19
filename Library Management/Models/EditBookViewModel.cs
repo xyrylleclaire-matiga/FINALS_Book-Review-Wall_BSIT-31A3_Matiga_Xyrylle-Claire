@@ -4,6 +4,7 @@ namespace Library_Management.Models
 {
     public class EditBookViewModel
     {
+        [Key]
         [Required(ErrorMessage = "Book ID is required.")]
         public Guid BookId { get; set; }
         public Guid? BookCopyId { get; set; }
