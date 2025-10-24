@@ -10,7 +10,7 @@ namespace Library_Management.Data
 
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            var connectionString = "Server=(localdb)\\mssqllocaldb;Database=LibraryDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+            var connectionString = "Data Source=LibraryDb.db";
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
@@ -19,7 +19,7 @@ namespace Library_Management.Data
                 throw new InvalidOperationException("Connection string is hardcoded but empty.");
             }
 
-            builder.UseSqlServer(connectionString);
+            builder.UseSqlite(connectionString);
 
             return new ApplicationDbContext(builder.Options);
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library_Management.Controllers
 {
+    // Hindi natin ilalagay ang [Authorize] dito para ang lahat ng user (kahit naka-login lang) ay makakita ng Index.
     public class BookController : Controller
     {
         private readonly BookService _bookService;
@@ -16,7 +17,7 @@ namespace Library_Management.Controllers
             _bookService = bookService;
         }
 
-        // Public: view all books
+        // Public: view all books (Makikita ng lahat ng user)
         public async Task<IActionResult> Index()
         {
             var books = await _bookService.GetBooksAsync();
@@ -24,6 +25,7 @@ namespace Library_Management.Controllers
         }
 
         // Admin-only: show Add Book form
+        // [Authorize(Roles = "Admin")] ang magre-restrict para Admin lang ang makakapasok.
         [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
@@ -37,10 +39,12 @@ namespace Library_Management.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Tandaan: Ang code para mag-save sa database ay nasa BookService
                 await _bookService.AddBookAsync(model);
                 return RedirectToAction("Index");
             }
-            return View(model);
+            // Kung may error sa validation, ibalik ang user sa form
+            return View("Add", model); // Ibinabalik ang View na "Add"
         }
 
         // Admin-only: Delete book

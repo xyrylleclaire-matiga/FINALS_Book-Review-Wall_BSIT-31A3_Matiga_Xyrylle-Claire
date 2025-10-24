@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationDbC
 
 // ✅ Register DbContext for EF Core
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 
 // ✅ Register Identity (user accounts)
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
