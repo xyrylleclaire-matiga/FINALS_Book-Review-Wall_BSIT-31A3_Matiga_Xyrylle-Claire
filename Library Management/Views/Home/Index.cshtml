@@ -1,8 +1,114 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Library_Management.Models
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Welcome to the Review Book Hall";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container my-4"> @* Increased vertical margin to my-4 for more space *@
+    <div class="p-4 bg-white border rounded-3 shadow-lg home-card"> @* Increased padding to p-4 for more vertical height in the card *@
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="text-pink-dark mb-4 fw-bold display-5">
+                    <i class="bi bi-star-fill me-2"></i> Highest Rated Books
+                </h1>
+
+                <h2 class="h5 text-secondary fw-normal mb-4">
+                    Check out the top-rated books based on community reviews!
+                </h2>
+
+                @if (Model != null && Model.FeaturedBooks != null && Model.FeaturedBooks.Any())
+                {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+                        @foreach (var book in Model.FeaturedBooks.Take(3))
+                        {
+                            <div class="col">
+                                <div class="book-card text-center">
+                                    <a asp-controller="Book" asp-action="Details" asp-route-id="@book.BookId">
+                                        <img src="@book.CoverImageUrl" class="book-cover img-fluid" alt="@book.Title">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title book-title-text text-truncate">@book.Title</h5>
+                                        <p class="card-text small text-muted">by @book.AuthorName</p>
+                                        </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info bg-light-pink-bg border-pink-light mb-4" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        No featured books with ratings yet. <a asp-controller="Book" asp-action="Index" class="text-pink">Be the first to review!</a>
+                    </div>
+                }
+
+                <div class="text-center mt-4">
+                    <a asp-controller="Book" asp-action="Index" class="btn btn-lg btn-pink">
+                        View All Books & Reviews <i class="bi bi-arrow-right-short"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 border-start ps-lg-4 mt-5 mt-lg-0">
+                <h3 class="text-pink-dark h5 fw-bold mb-3">Review Hall Stats</h3>
+
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
+                        Total Books in Hall:
+                        <span class="badge bg-pink-light text-pink-dark">@Model.TotalBooks</span>
+                    </li>
+                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
+                        Total Reviews Posted:
+                        <span class="badge bg-pink-light text-pink-dark">@Model.TotalReviews</span>
+                    </li>
+                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
+                        Overall Average Rating:
+                        <span class="badge bg-pink-light text-pink-dark">
+                            @Model.OverallAverageRating.ToString("F2") <i class="bi bi-star-fill align-middle" style="color:#ffc107;"></i>
+                        </span>
+                    </li>
+                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
+                        Total Reviewers:
+                        <span class="badge bg-pink-light text-pink-dark">@Model.TotalMembers</span>
+                    </li>
+                </ul>
+
+                @* TINITINGNAN KUNG NAKA-LOG IN AT KUNG HINDI SIYA ADMIN *@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <h3 class="text-pink-dark h6 fw-bold mt-4 mb-2">Quick Actions</h3>
+                    <div class="d-grid gap-2">
+                        
+                        @* ETO ANG LOGIC: KUNG ADMIN LANG, IPAPAKITA ANG BUTTON *@
+                        @if (User.IsInRole("Admin")) 
+                        {
+                            <a asp-controller="Book" asp-action="Add" class="btn btn-sm btn-pink">
+                                <i class="bi bi-plus-circle me-1"></i> Add New Book (Admin)
+                            </a>
+                        }
+                        @* PARA SA LAHAT NG NAKA-LOG IN (KAHIT HINDI ADMIN) *@
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-person-fill me-1"></i> Manage Account
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <h3 class="text-pink-dark h6 fw-bold mt-4 mb-2">Join the Hall!</h3>
+                    <div class="d-grid gap-2">
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-sm btn-pink">
+                            <i class="bi bi-person-plus-fill me-1"></i> Create Free Reviewer Account
+                        </a>
+                        <p class="small text-muted text-center mt-2 mb-0">It only takes a minute!</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @* Add scripts here if needed *@
+}

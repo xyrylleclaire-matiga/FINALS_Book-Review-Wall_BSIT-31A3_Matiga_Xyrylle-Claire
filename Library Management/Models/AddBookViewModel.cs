@@ -15,5 +15,8 @@
 
         public string? Author { get; set; }
         public string? AuthorProfileImageUrl { get; set; }
+        public int TotalCopies { get; set; } = 0;
+        public int AvailableCopies { get; set; } = 0;
+
     }
 }

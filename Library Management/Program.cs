@@ -1,30 +1,37 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library_Management.Data;
+using Library_Management.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ✅ Connection string (check your appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ??
-                       throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+    throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+// ✅ Register DbContext for EF Core
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+// ✅ Register Identity (user accounts)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Add services to the container.
+// ✅ Add MVC and Razor support
 builder.Services.AddControllersWithViews();
-
-// DITO IDINAGDAG: Nagre-register ng support para sa Identity UI (Razor Pages)
 builder.Services.AddRazorPages();
 
+// ✅ Register your custom services (THIS FIXES YOUR ERROR)
+builder.Services.AddScoped<BookService>(); // BookService DI registration
+builder.Services.AddScoped<ILibraryService, LibraryService>(); // LibraryService DI registration
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ✅ Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -33,15 +40,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// MAHALAGA: Dapat nasa pagitan ng UseRouting at Map*
+// ✅ Auth middlewares must come here
 app.UseAuthentication();
 app.UseAuthorization();
 
-// DITO IDINAGDAG: Nagre-register ng endpoints para sa Identity
+// ✅ Map routes and Razor Pages
 app.MapRazorPages();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Book}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

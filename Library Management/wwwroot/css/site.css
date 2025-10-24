@@ -14,7 +14,8 @@
 
 /* 🔤 Typography & Base */
 html {
-    font-size: 15px;
+    /* ADJUSTED: Pinalaki ang base font size mula 15px para lumaki ang lahat */
+    font-size: 16px;
     scroll-behavior: smooth;
 }
 
@@ -26,13 +27,13 @@ body {
 }
 
 /* -------------------------------------- */
-/* ✨ CORRECTION 1: NAVBAR STYLES (SLIGHTLY SMALLER) */
+/* ✨ NAVBAR STYLES */
 
 .navbar-custom {
     padding-top: 1rem;
     padding-bottom: 1rem;
     display: flex;
-    align-items: center; /* Ito ang naggi-gitna sa lahat ng element */
+    align-items: center;
 }
 
 /* 🌸 Header */
@@ -56,9 +57,7 @@ header {
     text-decoration: none;
     position: relative;
     transition: all 0.3s ease;
-    /* MODIFIED: Reduced font-size to fit the navbar height */
-    font-size: 1.1rem; /* Use a smaller size to fit */
-    /* MODIFIED: Removed !important to allow proper vertical centering by parent flexbox */
+    font-size: 1.1rem;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
     line-height: normal;
@@ -85,22 +84,20 @@ header {
         .nav-link-custom:hover::after {
             width: 100%;
         }
-/* 🌸 Login & Signup Buttons */
-/* -------------------------------------- */
+
 /* 🌸 Login & Signup Buttons (ADJUSTED FOR COMPACT SIZE) */
 .btn-login,
 .btn-signup {
     font-weight: 600;
-    font-size: 1 rem; /* Slightly reduced font size */
-    border-radius: 20px; /* Adjusted: Ginawang 20px para mas maging bilog/capsule */
-    padding: 0.3rem 0.7rem; /* REDUCED: Mas kaunting padding para lumiit */
+    font-size: 1rem;
+    border-radius: 20px;
+    padding: 0.3rem 0.7rem;
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
 }
 
 .btn-login {
-    /* Login button is white background, deep pink text */
     background-color: #fff;
     color: var(--color-deep-pink);
     border: 1px solid #fff;
@@ -113,7 +110,6 @@ header {
     }
 
 .btn-signup {
-    /* Sign Up button is white background, deep pink text (FIXED from previous prompt) */
     border: 1px solid #fff;
     background-color: #fff;
     color: var(--color-deep-pink);
@@ -124,11 +120,7 @@ header {
         color: var(--color-deep-pink);
         transform: scale(1.05);
     }
-/* -------------------------------------- */
-/* -------------------------------------- */
 
-
-/* 🩷 Footer */
 footer {
     background-color: var(--color-accent);
     border-top: 1px solid var(--color-border-light);
@@ -147,67 +139,70 @@ footer {
     }
 
 /* ✨ Page Layout */
-main {
-    background-color: #fff;
-    border-radius: 18px;
-    box-shadow: var(--shadow-soft);
-    padding: 2rem;
-}
 
 /* 🩷 Page Title */
 h1.text-pink-dark {
     color: var(--color-deep-pink) !important;
 }
 
+/* ADJUSTED: Sub-heading size for 'Check out the top-rated books...' (h2.h5) */
+.col-lg-8 h2.h5 {
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+}
+
 /* -------------------------------------- */
-/* ✨ CORRECTION 2: BOOK CARD STYLES (SLIGHTLY SMALLER) */
+/* ✨ BOOK CARD STYLES */
 
 /* 📚 Book Card Grid */
 .book-card {
     background-color: var(--color-card-bg);
-    border-radius: 16px; /* REDUCED */
+    border-radius: 16px;
     box-shadow: var(--shadow-soft);
     overflow: hidden;
     position: relative;
     transition: all 0.3s ease;
+    height: 100%; /* Ensure cards in a row are same height */
+    display: flex;
+    flex-direction: column;
 }
 
     .book-card:hover {
-        transform: translateY(-4px); /* REDUCED */
+        transform: translateY(-4px);
         box-shadow: var(--shadow-hover);
     }
 
 /* 🖼️ Book Cover */
 .book-cover {
-    height: 220px; /* REDUCED: Smaller cover height for a more compact card look */
+    height: 220px;
     object-fit: cover;
     border-bottom: 1px solid var(--color-border-light);
     background-color: var(--color-hover-bg);
     cursor: pointer;
     transition: transform 0.3s ease;
+    width: 100%; /* Ensure image fills the container width */
 }
 
     .book-cover:hover {
-        transform: scale(1.03); /* REDUCED */
+        transform: scale(1.03);
     }
 
 /* 📖 Card Content */
 .card-body {
-    padding: 0.8rem 1rem; /* REDUCED */
+    padding: 0.8rem 1rem;
+    flex-grow: 1; /* Allow body to take remaining space */
 }
 
 .card-title.book-title-text {
     color: var(--color-deep-pink);
-    font-size: 1.05rem; /* REDUCED */
+    font-size: 1.05rem;
     font-weight: 600;
 }
-/* -------------------------------------- */
-
 
 /* 🩷 Add New Book Card */
 .add-card {
     border: 2px dashed var(--color-border-light);
-    border-radius: 16px; /* REDUCED */
+    border-radius: 16px;
     background-color: var(--color-card-bg);
     transition: all 0.3s ease;
 }
@@ -219,7 +214,6 @@ h1.text-pink-dark {
         box-shadow: 0 4px 10px rgba(255, 175, 201, 0.25);
     }
 
-    /* NOTE: These default rules are overridden by the overlap-plus-icon styles below */
     .add-card i.add-card-icon {
         transition: transform 0.3s ease, color 0.3s ease;
         color: var(--color-deep-pink);
@@ -235,22 +229,17 @@ h1.text-pink-dark {
         color: var(--color-pink);
     }
 
-    /* -------------------------------------- */
-    /* 🌟 OVERLAPPING PLUS ICON DESIGN FIX (SLIGHTLY SMALLER) */
-
+    /* 🌟 OVERLAPPING PLUS ICON DESIGN FIX */
     .add-card i.add-card-icon.overlap-plus-icon {
-        /* Container para sa Dashed Border at Overlap effect */
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
         position: relative;
-        width: 80px; /* REDUCED */
-        height: 80px; /* REDUCED */
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        /* Dashed Border */
-        border: 2px dashed var(--color-deep-pink); /* REDUCED */
-        /* Plus Sign Style */
-        font-size: 2.2rem; /* REDUCED */
+        border: 2px dashed var(--color-deep-pink);
+        font-size: 2.2rem;
         color: white;
         background-color: var(--color-deep-pink);
         z-index: 10;
@@ -258,31 +247,26 @@ h1.text-pink-dark {
         transition: all 0.3s ease;
     }
 
-
-        /* Secondary Pink Circle (Light Pink Overlay) - Ginagamit ang ::after */
+        /* Secondary Pink Circle (Light Pink Overlay) */
         .add-card i.add-card-icon.overlap-plus-icon::after {
             content: '';
             position: absolute;
-            width: 65px; /* REDUCED */
-            height: 65px; /* REDUCED */
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             background-color: var(--color-pink);
             top: 50%;
             left: 50%;
-            /* Shifted to create the desired overlap effect */
             transform: translate(-30%, -40%);
             opacity: 0.8;
             z-index: -1;
             transition: transform 0.3s ease;
         }
 
-
     /* Hover Effect: Change dashed border color to the lighter pink */
     .add-card:hover i.add-card-icon.overlap-plus-icon {
         border-color: var(--color-pink);
     }
-
-/* -------------------------------------- */
 /* END OF ICON FIX */
 
 /* ✨ Book Actions */
@@ -330,11 +314,11 @@ h1.text-pink-dark {
     color: var(--color-pink);
 }
 
-
-
 /* 📖 Card Content (Continued) */
 .text-muted strong {
     color: var(--color-deep-pink);
+    /* ADJUSTED: Pinalaki ang font-size */
+    font-size: 1rem;
 }
 
 .small.text-secondary {
@@ -374,7 +358,6 @@ h1.text-pink-dark {
 .btn-close-white {
     filter: invert(1) grayscale(100%) brightness(200%);
 }
-
 
 /* 💕 Book Details Modal (styling for /Book/Details partial) */
 .book-details-container {
@@ -421,13 +404,27 @@ h1.text-pink-dark {
     letter-spacing: 0.3px;
     border-radius: 10px;
     transition: all 0.3s ease;
+    /* Base font size na gagamitin kung walang btn-lg o btn-sm */
+    font-size: 1rem;
 }
 
-    .btn-pink:hover {
-        background-color: var(--color-deep-pink);
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(176, 78, 114, 0.25);
-    }
+/* ADJUSTED: Button size para sa 'View All Books & Reviews' (btn-lg) */
+.btn-lg {
+    font-size: 1.25rem !important;
+    padding: 0.75rem 1.6rem !important;
+}
+
+/* ADJUSTED: Button size para sa 'Create Free Reviewer Account' (btn-sm) */
+.btn-sm {
+    font-size: 1rem !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.btn-pink:hover {
+    background-color: var(--color-deep-pink);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(176, 78, 114, 0.25);
+}
 
 /* 📱 Responsiveness */
 @media (max-width: 576px) {
@@ -472,8 +469,6 @@ h1.text-pink-dark {
         color: var(--color-pink) !important;
         text-shadow: 0 0 4px rgba(255,143,177,0.4);
     }
-/* -------------------------------------- */
-
 
 /* 💖 Modal Details & Review System Styles */
 
@@ -502,7 +497,7 @@ h1.text-pink-dark {
 
 /* Custom Background for Review Form */
 .bg-light-pink-bg {
-    background-color: var(--color-hover-bg);
+    background-color: var(--color-hover-bg) !important;
 }
 
 /* Badge Text Color */
@@ -514,4 +509,87 @@ h1.text-pink-dark {
 .badge.bg-pink-light {
     background-color: var(--color-accent) !important;
     color: var(--color-deep-pink) !important;
+}
+
+/* -------------------------------------- */
+/* 💖 LOGIN/REGISTER/FORGOT PASSWORD PAGE STYLES (auth-container) */
+/* -------------------------------------- */
+
+/* Container for the authentication forms */
+.auth-container {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border-light) !important;
+    padding: 2.5rem !important;
+    box-shadow: var(--shadow-soft) !important;
+}
+
+/* Custom class for links on auth pages */
+a.text-pink {
+    color: var(--color-deep-pink) !important;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+    a.text-pink:hover {
+        color: var(--color-pink) !important;
+        text-decoration: underline;
+    }
+
+/* Floating Form Controls Adjustment */
+.form-control:focus {
+    border-color: var(--color-border-light) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 143, 177, 0.25) !important;
+}
+
+/* -------------------------------------- */
+/* 🏠 HOME PAGE STYLES (home-card) - ADJUSTED FONTS */
+/* -------------------------------------- */
+
+/* Container for the main Home Page content */
+.home-card {
+    /* Use the same styling as auth-container for consistency */
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border-light) !important;
+    border-radius: 18px !important; /* Slightly larger border-radius for main card */
+    box-shadow: var(--shadow-soft) !important;
+}
+
+/* ADJUSTED: Heading size for 'Review Hall Stats' (h3.h5) */
+.col-lg-4 h3.h5 {
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.8rem !important;
+}
+
+/* ADJUSTED: Heading size for 'Join the Hall!' / 'Quick Actions' (h3.h6) */
+.col-lg-4 h3.h6 {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.6rem !important;
+}
+
+
+/* ADJUSTED: The text for each Stat item (Total Books, Total Reviews, etc.) */
+.list-group-item {
+    font-size: 1.05rem;
+    padding: 0.6rem 1rem;
+}
+
+    /* ADJUSTED: The numbers/value badges (0, 1, 0.00) */
+    .list-group-item .badge {
+        font-size: 1.05rem;
+        padding: 0.45em 0.8em;
+        line-height: 1;
+    }
+
+/* ADJUSTED: Ang 'It only takes a minute!' text */
+p.small.text-muted {
+    font-size: 0.95rem !important;
+}
+
+/* Minor border adjustment for info alert on home page */
+.alert.border-pink-light {
+    border-color: var(--color-border-light) !important;
 }

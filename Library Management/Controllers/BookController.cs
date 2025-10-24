@@ -1,86 +1,54 @@
 ﻿using Library_Management.Models;
-using Library_Management_Domain.Entities;
+using Library_Management.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Threading.Tasks;
 
 namespace Library_Management.Controllers
 {
-    [Authorize]
     public class BookController : Controller
     {
-        [AllowAnonymous]
-        public IActionResult Index()
+        private readonly BookService _bookService;
+
+        public BookController(BookService bookService)
         {
-            var books = BookService.Instance.GetBooks();
+            _bookService = bookService;
+        }
+
+        // Public: view all books
+        public async Task<IActionResult> Index()
+        {
+            var books = await _bookService.GetBooksAsync();
             return View(books);
         }
 
-        [AllowAnonymous]
-        public IActionResult Details(Guid id)
+        // Admin-only: show Add Book form
+        [Authorize(Roles = "Admin")]
+        public IActionResult Add()
         {
-            var book = BookService.Instance.GetBooks().FirstOrDefault(b => b.BookId == id);
-            if (book == null)
-                return NotFound();
-
-            // 🩷 Return the partial view for modal display
-            return PartialView("_BookDetailsPartial", book);
+            return View();
         }
 
-        public IActionResult AddModal()
-        {
-            return PartialView("_AddBookPartial");
-        }
-
+        // Admin-only: POST Add Book
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Add(AddBookViewModel vm)
+        public async Task<IActionResult> AddBook(AddBookViewModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            BookService.Instance.AddBook(vm);
-            return Ok();
-        }
-
-        public IActionResult EditModal(Guid id)
-        {
-            var editBookViewModel = BookService.Instance.GetBookById(id);
-            if (editBookViewModel == null)
-                return NotFound();
-
-            return PartialView("_EditBookPartial", editBookViewModel);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(EditBookViewModel vm)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            BookService.Instance.UpdateBook(vm);
-            return Ok();
-        }
-
-        public IActionResult DeleteModal(Guid id)
-        {
-            var book = BookService.Instance.GetBookById(id);
-            if (book == null)
-                return NotFound();
-
-            return PartialView("_DeletePartial", id);
-        }
-
-        [HttpDelete]
-        public IActionResult Delete(Guid id)
-        {
-            try
+            if (ModelState.IsValid)
             {
-                BookService.Instance.DeleteBook(id);
-                return Ok();
+                await _bookService.AddBookAsync(model);
+                return RedirectToAction("Index");
             }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
+            return View(model);
+        }
+
+        // Admin-only: Delete book
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _bookService.DeleteBookAsync(id);
+            return RedirectToAction("Index");
         }
     }
 }

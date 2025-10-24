@@ -11,10 +11,18 @@ namespace Library_Management.Data
             : base(options)
         {
         }
-        public DbSet<AddBookViewModel> AddBookViewModels { get; set; }
-        public DbSet<BookListViewModel> BookListViewModels { get; set; }
-        public DbSet <EditBookViewModel> EditBookViewModels { get; set; }
-        //public DbSet <ErrorViewModel> ErrorViewModels { get; set; }
-    }
 
+        // Only entities go here
+        public DbSet<Book> Books { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure decimal precision for AverageRating
+            modelBuilder.Entity<Book>()
+                .Property(b => b.AverageRating)
+                .HasColumnType("decimal(5,2)"); // 5 total digits, 2 after decimal
+        }
+    }
 }

@@ -17,5 +17,8 @@ namespace Library_Management.Models
         public string? AuthorProfileImageUrl { get; set; } = default!;
         public int TotalCopies { get; set; } = 0;
         public int AvailableCopies { get; set; } = 0;
+
+        public int ReviewCount { get; set; } = 0;
+        public decimal AverageRating { get; set; } = 0.0M;
     }
 }

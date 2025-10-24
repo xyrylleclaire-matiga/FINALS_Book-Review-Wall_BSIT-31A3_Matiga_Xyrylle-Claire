@@ -1,32 +1,68 @@
-using System.Diagnostics;
-using Library_Management.Models;
+﻿using Library_Management.Models;
+using Library_Management.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Library_Management.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILibraryService _libraryService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILibraryService libraryService)
         {
-            _logger = logger;
+            _libraryService = libraryService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            // Get all books with reviews
+            var allBooks = await _libraryService.GetAllBooksWithReviewsAsync();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            IEnumerable<BookListViewModel> filteredBooks;
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // Admin sees all books
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                filteredBooks = allBooks.Select(b => new BookListViewModel
+                {
+                    BookId = b.BookId,
+                    Title = b.Title,
+                    ISBN = b.ISBN,
+                    Description = b.Description,
+                    Genre = b.Genre,
+                    AuthorName = b.AuthorName,
+                    CoverImageUrl = b.CoverImageUrl
+                }).ToList();
+            }
+            else
+            {
+                // Non-admin users and guests see only public books
+                // If you don’t have IsPublic yet, everyone sees all books for now
+                filteredBooks = allBooks.Select(b => new BookListViewModel
+                {
+                    BookId = b.BookId,
+                    Title = b.Title,
+                    ISBN = b.ISBN,
+                    Description = b.Description,
+                    Genre = b.Genre,
+                    AuthorName = b.AuthorName,
+                    CoverImageUrl = b.CoverImageUrl
+                }).ToList();
+            }
+
+            var viewModel = new HomeViewModel
+            {
+                FeaturedBooks = filteredBooks.Take(3).ToList(),
+                TotalBooks = filteredBooks.Count(),
+                TotalReviews = _libraryService.GetTotalReviewCount(),
+                OverallAverageRating = _libraryService.GetOverallAverageRating(),
+                TotalMembers = _libraryService.GetTotalMembersCount()
+            };
+
+            return View(viewModel);
         }
     }
 }
