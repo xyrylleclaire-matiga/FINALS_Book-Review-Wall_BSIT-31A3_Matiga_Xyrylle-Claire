@@ -8,15 +8,12 @@ using ReviewHall.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Connection string (from appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection")
     ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-// ✅ Register DbContext for EF Core (SQLite)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-// ✅ Register Identity (user accounts)
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -24,22 +21,18 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// ✅ Register Email Sender (for Identity)
 builder.Services.AddTransient<IEmailSender, NoOpEmailSender>();
 
-// ✅ Register Custom Services (Dependency Injection)
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<LibraryService>();
 builder.Services.AddScoped<ILibraryService, LibraryService>();
-builder.Services.AddScoped<ReviewService>(); // 👈 Fixes the missing dependency error
+builder.Services.AddScoped<ReviewService>();
 
-// ✅ Add MVC and Razor support
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// ✅ Automatically seed Admin user on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -54,7 +47,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// ✅ Configure HTTP Request Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -65,11 +57,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// ✅ Authentication & Authorization middlewares
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ✅ Map Routes and Razor Pages
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
@@ -77,13 +67,11 @@ app.MapControllerRoute(
 
 app.Run();
 
-// ✅ ADMIN SEEDER FUNCTION
 static async Task CreateAdminUser(IServiceProvider serviceProvider)
 {
     var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    // Create Admin role if not existing
     if (!await roleManager.RoleExistsAsync("Admin"))
     {
         await roleManager.CreateAsync(new IdentityRole("Admin"));
@@ -112,12 +100,10 @@ static async Task CreateAdminUser(IServiceProvider serviceProvider)
     }
 }
 
-// ✅ DUMMY EMAIL SENDER (for Identity’s email confirmations)
 public class NoOpEmailSender : IEmailSender
 {
     public Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        // 💤 Placeholder: no actual emails sent
         return Task.CompletedTask;
     }
 }

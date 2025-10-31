@@ -5,7 +5,7 @@ public class Review
 {
     public Guid ReviewId { get; set; }
     public Guid BookId { get; set; }
-    public string UserId { get; set; } // ✅ foreign key to IdentityUser
+    public string UserId { get; set; }
     public string Content { get; set; }
     public int Rating { get; set; }
     public DateTime ReviewDate { get; set; }

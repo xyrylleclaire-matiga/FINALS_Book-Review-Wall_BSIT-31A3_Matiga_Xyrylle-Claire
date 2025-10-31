@@ -8,18 +8,25 @@
     ViewData["Title"] = "Welcome to the Review Book Hall";
 }
 
-<div class="container my-4">
-    <div class="p-4 bg-white border rounded-3 shadow-lg home-card">
+<div class="container my-5">
+    <div class="home-card">
 
-        <div class="row">
-            <div class="col-lg-8">
-                <h1 class="text-pink-dark mb-4 fw-bold display-5">
-                    <i class="bi bi-star-fill me-2"></i><strong>Highest Rated Books</strong>
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <div class="mb-4">
+                    <i class="bi bi-stars" style="font-size: 3rem; color: var(--pink-primary);"></i>
+                </div>
+                <h1 class="display-5 text-pink-dark mb-3">
+                    <strong>Discover Amazing Books</strong>
                 </h1>
-
-                <h2 class="h5 text-secondary fw-normal mb-4">
-                    Check out the top-rated books based on community reviews!
+                <h2 class="h5 text-secondary fw-normal">
+                    Explore our community's highest-rated books and share your thoughts!
                 </h2>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
 
                 @if (Model != null && Model.FeaturedBooks != null && Model.FeaturedBooks.Any())
                 {
@@ -27,19 +34,29 @@
                         @foreach (var book in Model.FeaturedBooks)
                         {
                             <div class="col">
-                                <div class="card h-100 book-card text-center">
-                                    <a href="javascript:void(0);" onclick="openDetailsModal('@book.BookId')">
+                                <div class="book-card h-100">
+                                    <a href="javascript:void(0);" onclick="openDetailsModal('@book.BookId')" class="text-decoration-none">
                                         <img src="@book.CoverImageUrl"
                                              class="book-cover"
                                              alt="@book.Title"
-                                             onerror="this.onerror=null; this.src='https://placehold.co/400x200/FADADD/333?text=No+Cover';" />
+                                             onerror="this.onerror=null; this.src='https://placehold.co/400x280/FFB3D9/FFFFFF?text=No+Cover';" />
                                     </a>
                                     <div class="card-body">
-                                        <h5 class="card-title book-title-text text-truncate fw-bold" title="@book.Title">@book.Title</h5>
-                                        <p class="card-text small text-muted mb-1">by @book.AuthorName</p>
-                                        <p class="text-warning mb-0">
-                                            <i class="bi bi-star-fill"></i> @book.AverageRating.ToString("F2")
+                                        <h5 class="book-title-text text-truncate" title="@book.Title">
+                                            @book.Title
+                                        </h5>
+                                        <p class="card-text small text-muted mb-2">
+                                            <i class="bi bi-person-fill me-1"></i>by @book.AuthorName
                                         </p>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <p class="text-warning mb-0">
+                                                <i class="bi bi-star-fill me-1"></i>
+                                                <strong>@book.AverageRating.ToString("F1")</strong>
+                                            </p>
+                                            <button onclick="openDetailsModal('@book.BookId')" class="btn btn-sm btn-pink-custom">
+                                                View Details
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -48,83 +65,121 @@
                 }
                 else
                 {
-                    <div class="alert alert-info bg-light-pink-bg border-pink-light mb-4" role="alert">
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        No <strong>featured books</strong> yet. <a asp-controller="Book" asp-action="Index" class="text-pink fw-bold">Be the first to review!</a>
+                    <div class="alert bg-light-pink-bg border-pink-light mb-4" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-info-circle-fill me-3" style="font-size: 2rem; color: var(--pink-primary);"></i>
+                            <div>
+                                <strong class="d-block mb-1">No featured books yet!</strong>
+                                <span>Be the first to discover and review amazing books.</span>
+                                <a asp-controller="Book" asp-action="Index" class="text-pink fw-bold d-block mt-2">
+                                    Browse All Books <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 }
 
-                <div class="text-center mt-4">
+                <div class="text-center mt-5">
                     <a asp-controller="Book" asp-action="Index" class="btn btn-lg btn-pink-custom">
-                        View All Books & Reviews <i class="bi bi-arrow-right-short ms-2"></i>
+                        <i class="bi bi-book me-2"></i>
+                        Explore All Books
+                        <i class="bi bi-arrow-right ms-2"></i>
                     </a>
                 </div>
             </div>
 
-            <div class="col-lg-4 border-start ps-lg-4 mt-5 mt-lg-0">
-                <h3 class="text-pink-dark h5 fw-bold mb-3">Review Hall Stats 📊</h3>
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body" style="background: linear-gradient(135deg, #fff 0%, var(--pink-light) 100%);">
+                        <h3 class="h5 fw-bold mb-4 text-center" style="color: var(--pink-deep);">
+                            <i class="bi bi-graph-up-arrow me-2"></i>Hall Statistics
+                        </h3>
 
-                <ul class="list-group list-group-flush mb-4">
-                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
-                        Total Books in Hall:
-                        <span class="badge bg-pink-custom">@Model.TotalBooks</span>
-                    </li>
-                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
-                        Total Reviews Posted:
-                        <span class="badge bg-pink-custom">@Model.TotalReviews</span>
-                    </li>
-                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
-                        Overall Average Rating:
-                        <span class="badge bg-warning text-dark">
-                            @Model.OverallAverageRating.ToString("F2") <i class="bi bi-star-fill align-middle" style="color:#ffc107;"></i>
-                        </span>
-                    </li>
-                    <li class="list-group-item bg-light-pink-bg d-flex justify-content-between align-items-center">
-                        Total Reviewers:
-                        <span class="badge bg-pink-custom">@Model.TotalMembers</span>
-                    </li>
-                </ul>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-bottom">
+                                <span class="fw-semibold">
+                                    <i class="bi bi-book me-2 text-pink"></i>Total Books
+                                </span>
+                                <span class="badge bg-pink-custom">@Model.TotalBooks</span>
+                            </li>
+                            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-bottom">
+                                <span class="fw-semibold">
+                                    <i class="bi bi-chat-square-text me-2 text-pink"></i>Total Reviews
+                                </span>
+                                <span class="badge bg-pink-custom">@Model.TotalReviews</span>
+                            </li>
+                            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-bottom">
+                                <span class="fw-semibold">
+                                    <i class="bi bi-star-fill me-2 text-warning"></i>Average Rating
+                                </span>
+                                <span class="badge bg-warning text-white">
+                                    @Model.OverallAverageRating.ToString("F1") ★
+                                </span>
+                            </li>
+                            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold">
+                                    <i class="bi bi-people me-2 text-pink"></i>Reviewers
+                                </span>
+                                <span class="badge bg-pink-custom">@Model.TotalMembers</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <div class="card shadow-sm border-0">
-                        <div class="card-body text-center">
-                            <h5 class="text-pink-dark fw-bold mb-3">
-                                <i class="bi bi-person-circle me-2"></i>Welcome Back!
+                        <div class="card-body text-center" style="background: linear-gradient(135deg, #fff 0%, var(--pink-light) 100%);">
+                            <div class="mb-3">
+                                <i class="bi bi-person-circle" style="font-size: 4rem; color: var(--pink-primary);"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2" style="color: var(--pink-deep);">
+                                Welcome Back!
                             </h5>
                             <p class="text-muted mb-3">
-                                Logged in as <strong>@User.Identity?.Name</strong>
+                                <strong>@User.Identity?.Name</strong>
                             </p>
+
                             @if (User.IsInRole("Admin"))
                             {
-                                <a asp-controller="Book" asp-action="Index" class="btn btn-sm btn-pink-custom w-100 mb-2">
-                                    <i class="bi bi-book me-1"></i> Manage Books (Admin)
+                                <a asp-controller="Book" asp-action="Index" class="btn btn-pink-custom w-100 mb-2">
+                                    <i class="bi bi-gear-fill me-2"></i>Manage Books
                                 </a>
                             }
-                            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-sm btn-outline-secondary w-100">
-                                <i class="bi bi-person-fill me-1"></i> Manage Account
-                            </a>
+
+                            @* <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-person-gear me-2"></i>Account Settings
+                            </a> *@
                         </div>
                     </div>
                 }
                 else
                 {
                     <div class="card shadow-sm border-0">
-                        <div class="card-body text-center">
-                            <h5 class="text-pink-dark fw-bold mb-3">
-                                <i class="bi bi-heart-fill me-2"></i>Join the Hall!
+                        <div class="card-body text-center" style="background: linear-gradient(135deg, #fff 0%, var(--pink-light) 100%);">
+                            <div class="mb-3">
+                                <i class="bi bi-heart-fill" style="font-size: 4rem; color: var(--pink-primary);"></i>
+                            </div>
+                            <h5 class="fw-bold mb-3" style="color: var(--pink-deep);">
+                                Join Our Community!
                             </h5>
-                            <a asp-area="Identity" asp-page="/Account/Register"
-                               class="btn btn-lg btn-pink-custom w-100 mb-2">
-                                <i class="bi bi-person-plus me-2"></i><strong>Create Free Reviewer Account</strong>
+                            <p class="text-muted small mb-4">
+                                Create an account to review books and connect with other readers.
+                            </p>
+                            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-lg btn-pink-custom w-100 mb-3">
+                                <i class="bi bi-person-plus me-2"></i>
+                                <strong>Sign Up Free</strong>
                             </a>
-                            <p class="text-muted small mb-3">It only takes a minute!</p>
-                            <a asp-area="Identity" asp-page="/Account/Login" class="text-pink fw-bold small">
-                                Already have an account? Login here
-                            </a>
+                            <p class="mb-0">
+                                <a asp-area="Identity" asp-page="/Account/Login" class="text-pink fw-semibold">
+                                    Already a member? Sign In
+                                    <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </p>
                         </div>
                     </div>
                 }
+
             </div>
         </div>
     </div>
@@ -137,16 +192,15 @@
         }
 
         function showModal(html, title = 'Book Details') {
-            // Remove existing modal if any
             const existingModal = document.getElementById('bookModal');
             if (existingModal) {
                 existingModal.remove();
             }
 
             const modalHtml = `
-                <div class="modal fade show" id="bookModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal fade show" id="bookModal" tabindex="-1" style="display: block; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
                             ${html}
                         </div>
                     </div>
@@ -154,45 +208,81 @@
             `;
 
             document.body.insertAdjacentHTML('beforeend', modalHtml);
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden';
 
-            // Close modal handlers
             const modal = document.getElementById('bookModal');
 
             modal.addEventListener('click', function(e) {
-                if (e.target.id === 'bookModal' || e.target.classList.contains('btn-close')) {
+                if (e.target.id === 'bookModal') {
                     closeModal();
                 }
             });
+            const closeBtns = modal.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
 
-            // Close button inside modal
-            const closeBtn = modal.querySelector('[data-bs-dismiss="modal"]');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', closeModal);
-            }
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
         }
-
-                function closeModal() {
+        function closeModal() {
             const modal = document.getElementById('bookModal');
             if (modal) {
-                modal.classList.add('closing'); // Add closing animation
+                modal.classList.remove('show');
+                modal.classList.add('closing');
 
                 setTimeout(() => {
                     modal.remove();
-                    document.body.style.overflow = ''; // Restore scrolling
-                }, 300); // Wait for animation to finish (300ms)
+                    document.body.style.overflow = '';
+                }, 300);
             }
         }
 
         function openDetailsModal(bookId) {
+            const loadingHtml = `
+                <div class="modal-header">
+                    <h5 class="modal-title">Loading...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-5">
+                    <div class="spinner-border text-pink mb-3" role="status" style="width: 3rem; height: 3rem; color: var(--pink-primary);">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted">Loading book details...</p>
+                </div>
+            `;
+
+            showModal(loadingHtml, 'Loading Book');
+
             fetch(`/Book/Details?id=${bookId}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(res => res.text())
-            .then(html => showModal(html, 'Book Details'))
-            .catch(() => showMessage('Error loading book details.'));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load book details');
+                }
+                return response.text();
+            })
+            .then(html => {
+                closeModal();
+                setTimeout(() => {
+                    showModal(html, 'Book Details');
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                closeModal();
+                showMessage('Error loading book details. Please try again.');
+            });
         }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
     </script>
 }

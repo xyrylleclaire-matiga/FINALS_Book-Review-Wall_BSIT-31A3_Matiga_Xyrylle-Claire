@@ -11,7 +11,6 @@ namespace ReviewHall.Core.Models
         public string Comment { get; set; }
         public DateTime ReviewDate { get; set; }
 
-        // Display properties (no navigation properties in ViewModels)
         public string UserName { get; set; }
         public string BookTitle { get; set; }
     }

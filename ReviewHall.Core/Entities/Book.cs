@@ -1,5 +1,4 @@
-﻿// File: Book.cs
-
+﻿
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewHall.Core.Entities
@@ -12,20 +11,18 @@ namespace ReviewHall.Core.Entities
         public string Title { get; set; } = default!;
         [Required, MaxLength(50)]
         public string ISBN { get; set; } = default!;
-        [Required] // Ang description ay pwedeng long string (walang MaxLength)
+        [Required] 
         public string Description { get; set; } = default!;
         [Required, MaxLength(100)]
         public string Genre { get; set; } = default!;
         public DateTime PublishedDate { get; set; }
 
-        // ⭐ FIX: Dagdagan ang MaxLength para suportahan ang mahabang URL
         [Required, MaxLength(500)]
         public string CoverImageUrl { get; set; } = default!;
 
         [Required, MaxLength(100)]
         public string AuthorName { get; set; } = default!;
 
-        // ⭐ FIX: Dagdagan ang MaxLength para suportahan ang mahabang URL
         [Required, MaxLength(500)]
         public string AuthorProfileImageUrl { get; set; } = default!;
 

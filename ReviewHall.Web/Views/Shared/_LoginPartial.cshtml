@@ -23,23 +23,19 @@
     @foreach (var book in Model)
     {
         <div class="col">
-            <!-- Book Card -->
             <div class="card book-card h-100 shadow-sm border-0 rounded-lg">
 
-                <!-- Action Buttons (Edit/Details/Delete) -->
                 <div class="book-actions">
-                    <!-- Edit -->
+       
                     <a href="javascript:void(0);"
                        class="action-btn edit-btn"
                        title="Edit Book"
                        onclick="openEditModal('@book.BookId')">
                         <i class="bi bi-pencil-square"></i>
                     </a>
-                    <!-- Details -->
                     <a asp-action="Details" asp-route-id="@book.BookId" class="action-btn details-btn" title="Details">
                         <i class="bi bi-info-circle"></i>
                     </a>
-                    <!-- Delete -->
                     <a href="javascript:void(0);"
                        onclick="openDeleteModal('/Book/DeleteModal?id=@book.BookId', 'Delete Book')"
                        class="action-btn delete-btn"
@@ -49,14 +45,12 @@
 
                 </div>
 
-                <!-- Cover Image -->
                 <img src="@book.CoverImageUrl"
                      class="card-img-top book-cover"
                      alt="@book.Title"
                      style="height: 200px; object-fit: cover; background-color: #f7f7f7;"
                      onerror="this.onerror=null; this.src='https://placehold.co/400x200/FADADD/333?text=No+Cover';" />
 
-                <!-- Card Body -->
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <!-- Title (Shortened) -->
@@ -76,11 +70,9 @@
     }
 </div>
 
-<!-- COMMON MODAL STRUCTURE (Huwag i-delete) -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal content will be loaded here via AJAX -->
             <div class="modal-header bg-pink-accent">
                 <h5 class="modal-title text-pink-dark fw-bold" id="exampleModalLabel">Loading...</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -94,12 +86,8 @@
 
 @section Scripts {
     <script>
-        // Use a consistent way to handle errors and modals (Custom Message Box instead of alert)
         function showMessage(message) {
-            // Since we cannot use alert(), let's make a simple modal replacement notification
             console.error(message);
-            // Implement a custom toast or notification here if preferred
-            alert(message); // Fallback to alert for now
         }
 
         function openAddModal() {
@@ -111,10 +99,8 @@
                     return response.text();
                 })
                 .then(html => {
-                    // Update the modal content
                     document.querySelector('#exampleModal .modal-content').innerHTML = html;
 
-                    // Show the Bootstrap modal
                     let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
                     modal.show();
                 })
@@ -127,7 +113,6 @@
             fetch(`/Book/EditModal?id=${encodeURIComponent(bookId)}`)
                 .then(response => {
                     if (!response.ok) {
-                        // Check for 404 specifically
                         if (response.status === 404) {
                             throw new Error('Book not found.');
                         }
@@ -145,14 +130,13 @@
                 });
         }
 
-        // Gamit pa rin ang JQuery para sa DeleteModal (consistent sa original code mo)
         function openDeleteModal(url, title) {
             $.ajax({
                 url: url,
                 type: 'GET',
                 success: function (data) {
                     $('#exampleModal .modal-content').html(data);
-                    $('#exampleModal .modal-title').text(title); // Use correct element selector
+                    $('#exampleModal .modal-title').text(title); 
                     $('#exampleModal').modal('show');
                 },
                 error: function () {
@@ -161,7 +145,6 @@
             });
         }
 
-        // Delete confirmation function
         function confirmDelete(id) {
             fetch(`/Book/Delete/${id}`, {
                 method: 'DELETE'
@@ -179,14 +162,12 @@
             });
         }
 
-        // Form Submission Handler for Add and Edit
         document.addEventListener("submit", function (e) {
             const form = e.target;
 
             if (form.matches("#editBookForm") || form.matches("#addBookForm")) {
                 e.preventDefault();
 
-                // Simple form data encoding
                 const formData = new FormData(form);
                 const urlSearchParams = new URLSearchParams();
                 for (const pair of formData) {
@@ -196,18 +177,15 @@
                 fetch(form.action, {
                     method: form.method,
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded' // Mahalaga para sa MVC binding
+                        'Content-Type': 'application/x-www-form-urlencoded' 
                     },
                     body: urlSearchParams
                 })
                 .then(response => {
                     if (response.ok) {
-                        // Success: Reload the page to see the updated list
                         location.reload();
                     } else if (response.status === 400) {
-                        // Handle Validation Errors (If controller returns BadRequest(ModelState))
                         return response.json().then(errorData => {
-                            // Display the validation errors somehow (e.g., re-render form with errors)
                             showMessage('Validation failed. Please check the form.');
                             console.error('Validation Errors:', errorData);
                         });

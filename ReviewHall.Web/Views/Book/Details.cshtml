@@ -1,8 +1,5 @@
 ﻿@model ReviewHall.Core.Models.BookListViewModel
-@* NOTE: Assuming BookListViewModel contains necessary fields like Description and an average rating property.
-    If you need to display a list of reviews, you should ideally use a dedicated BookDetailsViewModel
-    that includes a list of Review objects. For this code, we'll use placeholder data/properties.
-*@
+
 
 <div class="modal-header modal-header-themed">
     <h5 class="modal-title fw-bold text-white">@Model.Title</h5>
@@ -17,7 +14,6 @@
                  class="img-fluid rounded-4 shadow-lg book-details-cover"
                  onerror="this.onerror=null; this.src='https://placehold.co/300x400/FADADD/333?text=No+Cover';" />
 
-            @* ⭐️ Placeholder for Average Rating and Count *@
             <div class="mt-3">
                 <span class="fs-5 fw-bold" style="color: var(--color-deep-pink);">
                     4.5
@@ -56,7 +52,6 @@
 
             <hr class="mt-4" />
 
-            @* 📝 Tabs for Description and Reviews *@
             <ul class="nav nav-tabs" id="bookTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active tab-link-pink" id="desc-tab" data-bs-toggle="tab" data-bs-target="#description-pane" type="button" role="tab" aria-controls="description-pane" aria-selected="true">Description</button>
@@ -68,15 +63,12 @@
 
             <div class="tab-content pt-3" id="bookTabsContent">
 
-                @* 📚 Description Tab Pane *@
                 <div class="tab-pane fade show active" id="description-pane" role="tabpanel" aria-labelledby="desc-tab">
                     <p class="text-muted">@Model.Description</p>
                 </div>
 
-                @* ⭐️ Reviews Tab Pane *@
                 <div class="tab-pane fade" id="reviews-pane" role="tabpanel" aria-labelledby="reviews-tab">
 
-                    @* ✍️ Review Submission Form *@
                     <h6 class="fw-bold mb-3" style="color: var(--color-deep-pink);">Leave Your Review</h6>
                     <form id="addReviewForm" action="/Book/AddReview" method="post" class="p-3 border rounded-3 bg-light-pink-bg mb-4">
                         <input type="hidden" name="BookId" value="@Model.BookId" />
@@ -101,7 +93,6 @@
                         <button type="submit" class="btn btn-pink btn-sm w-100 mt-2">Submit Review</button>
                     </form>
 
-                    @* 📄 Existing Reviews (Placeholder List) *@
                     <h6 class="fw-bold mb-3 mt-4 text-secondary">Recent Reviews (3)</h6>
                     <div class="review-list">
                         <p class="text-muted small">

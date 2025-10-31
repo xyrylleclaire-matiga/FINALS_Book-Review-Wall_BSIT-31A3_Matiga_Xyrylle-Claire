@@ -18,11 +18,10 @@ namespace ReviewHall.Services
             _context = context;
         }
 
-        // ✅ Get all books - FIXED: Rating Computation at Client-Side Sorting
         public async Task<List<BookListViewModel>> GetBooksAsync()
         {
             var booksQuery = _context.Books
-                .Include(b => b.Reviews) // Kasama ang Reviews collection
+                .Include(b => b.Reviews) 
                 .Select(b => new BookListViewModel
                 {
                     BookId = b.BookId,
@@ -37,27 +36,22 @@ namespace ReviewHall.Services
                     TotalCopies = b.TotalCopies,
                     AvailableCopies = b.AvailableCopies,
 
-                    // Compute ReviewCount at AverageRating
                     ReviewCount = b.Reviews.Count(),
                     AverageRating = b.Reviews.Any()
                                     ? (decimal)b.Reviews.Average(r => (double)r.Rating)
                                     : 0.0M
                 });
 
-            // ✅ FIX: Kumuha muna ng data sa database (ToListAsync)
             var booksList = await booksQuery.ToListAsync();
 
-            // ✅ FIX: I-sort na sa C# memory (Client-side sorting)
             return booksList.OrderByDescending(b => b.AverageRating).ToList();
         }
 
-        // ✅ Get book by ID (Walang pagbabago)
         public async Task<Book?> GetBookByIdAsync(Guid id)
         {
             return await _context.Books.FindAsync(id);
         }
 
-        // ✅ Add new book (Walang pagbabago)
         public async Task AddBookAsync(Book book)
         {
             book.BookId = Guid.NewGuid();
@@ -69,10 +63,6 @@ namespace ReviewHall.Services
             await _context.SaveChangesAsync();
         }
 
-        // File: BookService.cs
-        // File: BookService.cs
-
-        // ✅ Tiyakin na ang method na ito ay nagbabalik ng bool
         public async Task<bool> UpdateBookAsync(Book book)
         {
             var existingBook = await _context.Books.FindAsync(book.BookId);
@@ -84,7 +74,6 @@ namespace ReviewHall.Services
 
             try
             {
-                // ... (lahat ng existingBook properties ay tama na i-update dito) ...
                 existingBook.Title = book.Title;
                 existingBook.ISBN = book.ISBN;
                 existingBook.Description = book.Description;
@@ -95,19 +84,17 @@ namespace ReviewHall.Services
                 existingBook.AuthorProfileImageUrl = book.AuthorProfileImageUrl;
                 existingBook.TotalCopies = book.TotalCopies;
                 existingBook.AvailableCopies = book.AvailableCopies;
-                existingBook.IsPublic = true; // Siguraduhin na 'true' ito
+                existingBook.IsPublic = true; 
 
                 await _context.SaveChangesAsync();
-                return true; // Success
+                return true; 
             }
             catch (Exception ex)
             {
-                // Kung may error sa database (hal. data too long, constraint), babalik ng false
                 return false;
             }
         }
 
-        // ✅ Delete book (Walang pagbabago)
         public async Task DeleteBookAsync(Guid id)
         {
             var book = await _context.Books.FindAsync(id);
@@ -117,14 +104,11 @@ namespace ReviewHall.Services
                 await _context.SaveChangesAsync();
             }
         }
-
-        // ✅ Check if book exists (Walang pagbabago)
         public async Task<bool> BookExistsAsync(Guid id)
         {
             return await _context.Books.AnyAsync(b => b.BookId == id);
         }
 
-        // ✅ Get books by genre - FIXED: Rating Computation at Client-Side Sorting
         public async Task<List<BookListViewModel>> GetBooksByGenreAsync(string genre)
         {
             var booksQuery = _context.Books
@@ -153,7 +137,6 @@ namespace ReviewHall.Services
             return booksList.OrderByDescending(b => b.AverageRating).ToList();
         }
 
-        // ✅ Search books by title or author - FIXED: Rating Computation at Client-Side Sorting
         public async Task<List<BookListViewModel>> SearchBooksAsync(string searchTerm)
         {
             var booksQuery = _context.Books

@@ -8,22 +8,51 @@
     ViewData["Title"] = "Books";
 }
 
-<div class="container py-4">
-    <h1 class="mb-4 fw-bold text-pink-dark d-flex align-items-center">
-        <i class="bi bi-book-half me-2"></i> Book Library
-    </h1>
+<div class="container py-5">
+    <div class="page-header-wrapper mb-5">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="header-content">
+                <h1 class="mb-2 fw-bold text-pink-dark d-flex align-items-center animated-header">
+                    <span class="header-icon-wrapper me-3">
+                        <i class="bi bi-book-half"></i>
+                    </span>
+                    <span class="header-text">Book Library</span>
+                </h1>
+                <p class="text-muted mb-0 ms-5 ps-3">
+                    <i class="bi bi-collection me-2"></i>
+                    Explore our collection of <strong class="text-pink">@Model.Count()</strong> amazing books
+                </p>
+            </div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <div class="header-actions">
+                    <button onclick="openAddModal()" class="btn btn-pink-custom btn-lg shadow-lg pulse-button">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Add New Book
+                    </button>
+                </div>
+            }
+        </div>
+        <div class="header-divider mt-4"></div>
+    </div>
 
-        @* Only show "Add New Book" if user is signed in AND is Admin *@
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {
             <div class="col">
                 <a href="javascript:void(0);" onclick="openAddModal()"
-                   class="card h-100 add-card d-flex align-items-center justify-content-center text-decoration-none bg-white hover-lift">
-                    <div class="text-center p-4">
-                        <i class="bi bi-plus add-card-icon overlap-plus-icon"></i>
-                        <p class="mt-2 fw-semibold add-card-text">Add New Book</p>
+                   class="card h-100 add-card-enhanced d-flex align-items-center justify-content-center text-decoration-none">
+                    <div class="text-center p-4 add-card-content">
+                        <div class="add-icon-container mb-3">
+                            <div class="add-icon-circle">
+                                <i class="bi bi-plus-lg add-icon"></i>
+                            </div>
+                            <div class="add-icon-pulse"></div>
+                        </div>
+                        <p class="fw-bold add-card-text mb-1">Add New Book</p>
+                        <p class="small text-muted mb-0">Expand your library</p>
                     </div>
                 </a>
             </div>
@@ -32,93 +61,195 @@
         @foreach (var book in Model)
         {
             <div class="col">
-                <div class="card book-card h-100 rounded-4 overflow-hidden border-0 hover-lift position-relative">
-                    <a href="javascript:void(0);" onclick="openDetailsModal('@book.BookId')" class="book-link">
-                        <img src="@book.CoverImageUrl"
-                             class="card-img-top book-cover"
-                             alt="@book.Title"
-                             onerror="this.onerror=null; this.src='https://placehold.co/400x200/FADADD/333?text=No+Cover';" />
-                    </a>
+                <div class="card book-card-enhanced h-100 position-relative">
+                    <div class="book-cover-wrapper">
+                        <a href="javascript:void(0);" onclick="openDetailsModal('@book.BookId')" class="book-link">
+                            <img src="@book.CoverImageUrl"
+                                 class="book-cover-enhanced"
+                                 alt="@book.Title"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x500/FADADD/333?text=No+Cover';" />
+                            <div class="book-cover-overlay">
+                                <i class="bi bi-eye-fill"></i>
+                                <span>View Details</span>
+                            </div>
+                        </a>
+                        @if (book.AvailableCopies > 0)
+                        {
+                            <span class="availability-badge available">
+                                <i class="bi bi-check-circle-fill me-1"></i>Available
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="availability-badge unavailable">
+                                <i class="bi bi-x-circle-fill me-1"></i>Out of Stock
+                            </span>
+                        }
+                    </div>
 
-                    @* Only show Edit/Delete buttons if user is Admin *@
                     @if (User.IsInRole("Admin"))
                     {
-                        <div class="book-actions">
-                            <a href="javascript:void(0);" class="action-btn edit-btn" title="Edit Book"
-                               onclick="openEditModal('@book.BookId')">
+                        <div class="book-actions-enhanced">
+                            <button onclick="openEditModal('@book.BookId')"
+                                    class="action-btn-enhanced edit-btn-enhanced"
+                                    title="Edit Book">
                                 <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="action-btn delete-btn" title="Delete Book"
-                               onclick="openDeleteModal('/Book/DeleteModal?id=@book.BookId')">
-                                <i class="bi bi-trash"></i>
-                            </a>
+                            </button>
+                            <button onclick="openDeleteModal('/Book/DeleteModal?id=@book.BookId')"
+                                    class="action-btn-enhanced delete-btn-enhanced"
+                                    title="Delete Book">
+                                <i class="bi bi-trash3"></i>
+                            </button>
                         </div>
                     }
 
-                    <div class="card-body d-flex flex-column justify-content-between text-center">
-                        <div>
-                            <h6 class="card-title text-truncate fw-bold book-title-text" title="@book.Title">
-                                @book.Title
-                            </h6>
-                            <p class="text-muted mb-1 text-truncate small">
-                                Author: <strong>@book.AuthorName</strong>
-                            </p>
+                    <div class="card-body-enhanced">
+                        <h6 class="book-title-enhanced" title="@book.Title">
+                            @book.Title
+                        </h6>
+
+                        <div class="book-author-enhanced mb-2">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span>@book.AuthorName</span>
                         </div>
-                        <p class="mt-2 small text-secondary">
-                            @book.Genre | Copies: <strong>@book.AvailableCopies</strong> / <strong>@book.TotalCopies</strong>
-                        </p>
+
+                        <div class="book-meta-enhanced">
+                            <span class="meta-badge genre-badge">
+                                <i class="bi bi-tag-fill me-1"></i>@book.Genre
+                            </span>
+                            <span class="meta-badge copies-badge">
+                                <i class="bi bi-stack me-1"></i>
+                                <strong>@book.AvailableCopies</strong>/@book.TotalCopies
+                            </span>
+                        </div>
                     </div>
+
+                    <div class="card-bottom-accent"></div>
                 </div>
             </div>
         }
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content rounded-4 border-0 shadow-lg">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="exampleModalLabel" data-bs-title="Loading..." style="color: white;">Loading...</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    @if (Model.Any())
+    {
+        <div class="stats-section mt-5 p-4">
+            <div class="row text-center g-4">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="bi bi-book stat-icon"></i>
+                        <h3 class="stat-number">@Model.Count()</h3>
+                        <p class="stat-label">Total Books</p>
+                    </div>
                 </div>
-                <div class="modal-body text-center p-5">
-                    <i class="bi bi-arrow-clockwise spin" style="font-size: 2rem; color: var(--color-pink);"></i>
-                    <p class="mt-3 text-muted">Loading content...</p>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="bi bi-collection stat-icon"></i>
+                        <h3 class="stat-number">@Model.Sum(b => b.TotalCopies)</h3>
+                        <p class="stat-label">Total Copies</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="bi bi-check-circle stat-icon"></i>
+                        <h3 class="stat-number">@Model.Sum(b => b.AvailableCopies)</h3>
+                        <p class="stat-label">Available</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="bi bi-bookmark stat-icon"></i>
+                        <h3 class="stat-number">@Model.Select(b => b.Genre).Distinct().Count()</h3>
+                        <p class="stat-label">Genres</p>
+                    </div>
                 </div>
             </div>
-            <div id="modal-content-placeholder"></div>
+        </div>
+    }
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content enhanced-modal-content">
+                <div class="modal-header enhanced-modal-header">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel" style="color: white;">
+                        <i class="bi bi-hourglass-split spin me-2"></i>Loading...
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-5 loading-modal-body">
+                    <div class="loading-spinner-wrapper">
+                        <div class="loading-spinner"></div>
+                        <i class="bi bi-book-half loading-book-icon"></i>
+                    </div>
+                    <p class="mt-4 text-muted fw-semibold">Loading content...</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        function showMessage(message) { alert(message); }
+        function showMessage(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'custom-alert';
+            alertDiv.innerHTML = `
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => alertDiv.classList.add('show'), 100);
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 3000);
+        }
 
         function showModal(html, title = 'Book Details') {
             const modal = document.getElementById('exampleModal');
-            modal.querySelector('.modal-title').textContent = title;
-            modal.querySelector('.modal-content').innerHTML = html;
-            new bootstrap.Modal(modal).show();
+            const modalContent = modal.querySelector('.modal-content');
+
+            modalContent.classList.add('modal-closing');
+
+            setTimeout(() => {
+                modal.querySelector('.modal-title').innerHTML = `<i class="bi bi-book me-2"></i>${title}`;
+                modalContent.innerHTML = html;
+                modalContent.classList.remove('modal-closing');
+                new bootstrap.Modal(modal).show();
+            }, 150);
         }
 
-        function openAddModal() { fetch(`/Book/AddModal`).then(res => res.text()).then(html => showModal(html, 'Add New Book')).catch(() => showMessage('Error loading Add Book form.')); }
+        function openAddModal() {
+            fetch(`/Book/AddModal`)
+                .then(res => res.text())
+                .then(html => showModal(html, '<i class="bi bi-plus-circle me-2"></i>Add New Book'))
+                .catch(() => showMessage('Error loading Add Book form.'));
+        }
 
-        function openEditModal(bookId) { fetch(`/Book/EditModal?id=${bookId}`).then(res => res.text()).then(html => showModal(html, 'Edit Book')).catch(() => showMessage('Error loading Edit Book form.')); }
+        function openEditModal(bookId) {
+            fetch(`/Book/EditModal?id=${bookId}`)
+                .then(res => res.text())
+                .then(html => showModal(html, '<i class="bi bi-pencil-square me-2"></i>Edit Book'))
+                .catch(() => showMessage('Error loading Edit Book form.'));
+        }
 
-        function openDetailsModal(bookId) { 
+        function openDetailsModal(bookId) {
             fetch(`/Book/Details?id=${bookId}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
             .then(res => res.text())
-            .then(html => showModal(html, 'Book Details'))
-            .catch(() => showMessage('Error loading book details.')); 
+            .then(html => showModal(html, '<i class="bi bi-info-circle me-2"></i>Book Details'))
+            .catch(() => showMessage('Error loading book details.'));
         }
 
-        function openDeleteModal(url) { fetch(url).then(res => res.text()).then(html => showModal(html, 'Confirm Deletion')).catch(() => showMessage('Error loading delete confirmation.')); }
+        function openDeleteModal(url) {
+            fetch(url)
+                .then(res => res.text())
+                .then(html => showModal(html, '<i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion'))
+                .catch(() => showMessage('Error loading delete confirmation.'));
+        }
 
-                document.addEventListener("submit", function (e) {
+        document.addEventListener("submit", function (e) {
             const form = e.target;
             if (
                 form.matches("#editBookForm") ||
@@ -134,51 +265,41 @@
                     method: form.method,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest' // ✅ THIS IS THE FIX!
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: params
                 })
-                    .then(res => {
-                                if (form.matches("#addReviewForm")) {
-                                return res.json().then(result => {
-                                    if (result.success) {
-                                        showMessage('Review submitted successfully!');
-                                        setTimeout(() => {
-                                            window.location.href = '/Book'; // ✅ Redirect back to main library
-                                        }, 1000); // small delay so user sees the message
-                                    } else {
-                                        showMessage(`Error submitting review: ${result.message || 'Check inputs.'}`);
-                                    }
-                                });
+                .then(res => {
+                    if (form.matches("#addReviewForm")) {
+                        return res.json().then(result => {
+                            if (result.success) {
+                                showMessage('Review submitted successfully!');
+                                setTimeout(() => {
+                                    window.location.href = '/Book';
+                                }, 1000);
+                            } else {
+                                showMessage(`Error submitting review: ${result.message || 'Check inputs.'}`);
                             }
-                             else {
-                                if (res.ok) {
-                                    // If it’s Add/Edit/Delete form → refresh the page
-                                    if (
-                                        form.matches("#editBookForm") ||
-                                        form.matches("#addBookForm") ||
-                                        form.matches("#deleteBookForm")
-                                    ) {
-                                        bootstrap.Modal.getInstance(document.getElementById('exampleModal'))?.hide();
-                                        location.reload();
-                                    }
-                                    // If it’s a review form → reload only the modal content
-                                            else if (form.matches("#addReviewForm")) {
-                                        const bookId = formData.get('BookId');
-                                        showMessage('Review submitted successfully!');
-                                        setTimeout(() => openDetailsModal(bookId), 500); // small delay for better UX
-                                    }
-
-                                } else {
-                                    showMessage("Error saving changes. Check your inputs.");
-                                }
-
+                        });
+                    } else {
+                        if (res.ok) {
+                            if (
+                                form.matches("#editBookForm") ||
+                                form.matches("#addBookForm") ||
+                                form.matches("#deleteBookForm")
+                            ) {
+                                bootstrap.Modal.getInstance(document.getElementById('exampleModal'))?.hide();
+                                showMessage('Changes saved successfully!');
+                                setTimeout(() => location.reload(), 800);
+                            }
+                        } else {
+                            showMessage("Error saving changes. Check your inputs.");
                         }
-                    })
-                    .catch(() => showMessage("Form submission failed."));
+                    }
+                })
+                .catch(() => showMessage("Form submission failed."));
             }
         });
-
 
         document.addEventListener("click", function (e) {
             if (e.target.matches('#ratingStars i')) {
@@ -193,6 +314,15 @@
                     star.classList.toggle('text-muted', starRating > clickedRating);
                 });
             }
+        });
+
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.book-card-enhanced, .add-card-enhanced');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animation = 'fadeInUp 0.6s ease forwards';
+                }, index * 50);
+            });
         });
     </script>
 }

@@ -21,7 +21,6 @@ namespace ReviewHall.Web.Controllers
             _reviewService = reviewService;
         }
 
-        // ✅ View all books
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
@@ -29,7 +28,6 @@ namespace ReviewHall.Web.Controllers
             return View(books);
         }
 
-        // ✅ View book details with reviews
         [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -81,7 +79,7 @@ namespace ReviewHall.Web.Controllers
                     return Json(new { success = false, message = "You must be logged in to submit a review." });
 
                 TempData["ErrorMessage"] = "You must be logged in to submit a review.";
-                return RedirectToAction("Index"); // 🔥 FIXED
+                return RedirectToAction("Index"); 
             }
 
             try
@@ -108,12 +106,9 @@ namespace ReviewHall.Web.Controllers
                 TempData["ErrorMessage"] = "An unexpected error occurred while submitting your review.";
             }
 
-            // 🔥 FIXED: Redirect to /Book instead of /Book/Details
             return RedirectToAction("Index");
         }
 
-
-        // ✅ Admin-only actions
 
         [Authorize(Roles = "Admin")]
         public IActionResult AddModal() => PartialView("_AddBookModalPartial");
@@ -152,19 +147,16 @@ namespace ReviewHall.Web.Controllers
             return PartialView("_EditBookModalPartial", viewModel);
         }
 
-        // File: BookController.cs
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditBookViewModel model)
         {
-            // 1. Validate the incoming data
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { success = false, message = "Input validation failed. Please check all fields." });
             }
 
-            // 2. Get the existing book from database
             var existingBook = await _bookService.GetBookByIdAsync(model.BookId);
 
             if (existingBook == null)
@@ -172,20 +164,17 @@ namespace ReviewHall.Web.Controllers
                 return NotFound(new { success = false, message = "Book not found." });
             }
 
-            // 3. Update only the editable properties
             existingBook.Title = model.Title;
             existingBook.ISBN = model.ISBN;
             existingBook.Description = model.Description;
             existingBook.Genre = model.Genre;
 
-            // 🔥 FIX: Handle nullable DateTime
             existingBook.PublishedDate = model.PublishedDate ?? existingBook.PublishedDate;
 
             existingBook.AuthorName = model.Author;
             existingBook.AuthorProfileImageUrl = model.AuthorProfileImageUrl;
             existingBook.CoverImageUrl = model.CoverImageUrl;
 
-            // 4. Save the changes
             var isUpdateSuccessful = await _bookService.UpdateBookAsync(existingBook);
 
             if (isUpdateSuccessful)
