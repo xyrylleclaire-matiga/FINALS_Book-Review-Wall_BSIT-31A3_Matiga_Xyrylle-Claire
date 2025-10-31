@@ -36,6 +36,17 @@ body {
     padding-bottom: 1rem;
     display: flex;
     align-items: center;
+    justify-content: space-between; /* 🔥 ADDED: Space between items */
+}
+
+/* 🔥 NEW: Auth buttons container - move to left */
+.navbar-nav.ms-auto {
+    margin-left: 1rem !important; /* Override Bootstrap's ms-auto */
+    margin-right: auto !important; /* Push to left */
+}
+
+.navbar-nav.auth-buttons {
+    margin-left: 2rem !important; /* Adjust spacing from nav links */
 }
 
 /* 🌸 Header */
@@ -88,28 +99,49 @@ header {
         }
 
 /* 🌸 Login & Signup Buttons */
+/* 🌸 Login & Signup Buttons - ENHANCED VERSION */
 .btn-login,
 .btn-signup {
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    border-radius: 20px !important;
-    padding: 0.3rem 0.7rem !important;
+    font-weight: 700 !important; /* 🔥 Mas bold */
+    font-size: 1.05rem !important; /* 🔥 Medyo bigger */
+    border-radius: 25px !important; /* 🔥 Mas rounded */
+    padding: 0.5rem 1.2rem !important; /* 🔥 Mas malaki */
     transition: all 0.3s ease !important;
     text-decoration: none !important;
     display: inline-block !important;
-    background-color: transparent !important;
-    border: 2px solid #fff !important;
-    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important; /* 🔥 May shadow para pop out */
 }
 
-    .btn-login:hover,
-    .btn-signup:hover {
-        background-color: var(--color-accent) !important;
+/* 🔥 LOGIN BUTTON - White with pink text */
+.btn-login {
+    background-color: #ffffff !important; /* White background */
+    color: var(--color-deep-pink) !important; /* Pink text */
+    border: 2px solid #ffffff !important;
+}
+
+    .btn-login:hover {
+        background-color: var(--color-accent) !important; /* Light pink on hover */
         color: var(--color-deep-pink) !important;
-        transform: scale(1.05) !important;
+        transform: scale(1.08) !important; /* 🔥 Lumalaki on hover */
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
         border-color: var(--color-accent) !important;
     }
 
+/* 🔥 SIGN UP BUTTON - Magenta */
+.btn-signup {
+    background-color: #e91e63 !important; /* Magenta */
+    color: #ffffff !important;
+    border: 2px solid #e91e63 !important;
+}
+
+    .btn-signup:hover {
+        background-color: #c2185b !important;
+        color: #ffffff !important;
+        transform: scale(1.08) !important;
+        box-shadow: 0 6px 16px rgba(233, 30, 99, 0.5) !important;
+        border-color: #c2185b !important;
+
+    }
 footer {
     background-color: var(--color-accent);
     border-top: 1px solid var(--color-border-light);

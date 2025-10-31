@@ -1,28 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Library Management</title>
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="~/css/site.css" />
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
-
 <body>
-
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3 navbar-custom"
              style="background: linear-gradient(90deg, var(--color-deep-pink), var(--color-pink));">
@@ -32,9 +23,8 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link nav-link-custom" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -42,8 +32,8 @@
                             <a class="nav-link nav-link-custom" asp-area="" asp-controller="Book" asp-action="Index">Books</a>
                         </li>
                     </ul>
-
-                    <div class="d-flex align-items-center">
+                    <!-- 🔥 FIXED: Added me-4 para hindi sobrang layo sa edge -->
+                    <div class="d-flex align-items-center me-4">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <span class="text-white me-3">Hello, @User.Identity.Name</span>
@@ -61,18 +51,15 @@
             </div>
         </nav>
     </header>
-
     <main role="main" class="container my-5">
         @RenderBody()
     </main>
-
     <footer class="text-center py-3 mt-5">
         <p class="mb-0">
             © 2025 - <strong>Library_Management</strong> -
             <a href="/Home/Privacy" class="footer-link">Privacy</a>
         </p>
     </footer>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js"></script>
