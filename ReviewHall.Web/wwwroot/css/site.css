@@ -1,0 +1,737 @@
+﻿/* 🌸 Library Management Pink Theme (Refined - CORRECTED) */
+:root {
+    --color-bg: #fff9fb;
+    --color-accent: #ffd6e0;
+    --color-pink: #ff8fb1;
+    --color-deep-pink: #b04e72;
+    --color-text-dark: #3e3e3e;
+    --color-border-light: #f5b8c8;
+    --color-card-bg: #ffffff;
+    --color-hover-bg: #fff0f5;
+    --shadow-soft: 0 4px 12px rgba(240, 158, 182, 0.2);
+    --shadow-hover: 0 8px 20px rgba(240, 158, 182, 0.3);
+    /* Custom colors for better button consistency */
+    --color-button-main: #ec407a;
+    --color-button-hover: #d81b60;
+}
+
+/* 🔤 Typography & Base */
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text-dark);
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    margin-bottom: 60px;
+}
+
+/* -------------------------------------- */
+/* ✨ NAVBAR STYLES */
+
+.navbar-custom {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* 🌸 Header */
+header {
+    background: linear-gradient(90deg, var(--color-deep-pink), var(--color-pink));
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(176, 78, 114, 0.3);
+    border-bottom: 1px solid rgba(255, 175, 201, 0.3);
+}
+
+.site-title {
+    color: #fff;
+    font-size: 1.9rem !important;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.nav-link-custom {
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    line-height: normal;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .nav-link-custom::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: var(--color-accent);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link-custom:hover {
+        color: var(--color-accent);
+    }
+
+        .nav-link-custom:hover::after {
+            width: 100%;
+        }
+
+/* 🌸 Login & Signup Buttons */
+.btn-login,
+.btn-signup {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    border-radius: 20px !important;
+    padding: 0.3rem 0.7rem !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    background-color: transparent !important;
+    border: 2px solid #fff !important;
+    color: #fff !important;
+}
+
+    .btn-login:hover,
+    .btn-signup:hover {
+        background-color: var(--color-accent) !important;
+        color: var(--color-deep-pink) !important;
+        transform: scale(1.05) !important;
+        border-color: var(--color-accent) !important;
+    }
+
+footer {
+    background-color: var(--color-accent);
+    border-top: 1px solid var(--color-border-light);
+    color: #4a004f;
+    font-size: 0.95rem;
+}
+
+.footer-link {
+    color: #4a004f;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+    .footer-link:hover {
+        color: var(--color-deep-pink);
+    }
+
+/* ✨ Page Layout */
+
+/* 🩷 Page Title */
+h1.text-pink-dark {
+    color: var(--color-deep-pink) !important;
+}
+
+/* Sub-heading size */
+.col-lg-8 h2.h5 {
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+}
+
+/* -------------------------------------- */
+/* ✨ BOOK CARD STYLES */
+
+.book-card {
+    background-color: var(--color-card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-hover-bg);
+}
+
+    .book-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+        border: 1px solid var(--color-pink);
+    }
+
+/* 🖼️ Book Cover */
+.book-cover {
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-border-light);
+    background-color: var(--color-hover-bg);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 100%;
+}
+
+    .book-cover:hover {
+        transform: scale(1.03);
+    }
+
+/* 📖 Card Content */
+.card-body {
+    padding: 0.8rem 1rem;
+    flex-grow: 1;
+}
+
+.card-title.book-title-text {
+    color: var(--color-deep-pink);
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/* 🩷 Add New Book Card */
+.add-card {
+    border: 2px dashed var(--color-border-light);
+    border-radius: 16px;
+    background-color: var(--color-card-bg);
+    transition: all 0.3s ease;
+}
+
+    .add-card:hover {
+        background-color: var(--color-hover-bg);
+        border-color: var(--color-pink);
+        transform: translateY(-4px);
+        box-shadow: 0 4px 10px rgba(255, 175, 201, 0.25);
+    }
+
+    .add-card i.add-card-icon {
+        transition: transform 0.3s ease, color 0.3s ease;
+        color: var(--color-deep-pink);
+        font-size: 3rem;
+    }
+
+    .add-card p.add-card-text {
+        color: var(--color-deep-pink);
+    }
+
+    .add-card:hover i.add-card-icon {
+        transform: scale(1.1) rotate(5deg);
+        color: var(--color-pink);
+    }
+
+    /* 🌟 OVERLAPPING PLUS ICON DESIGN */
+    .add-card i.add-card-icon.overlap-plus-icon {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 2px dashed var(--color-deep-pink);
+        font-size: 2.2rem;
+        color: white;
+        background-color: var(--color-deep-pink);
+        z-index: 10;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+
+        .add-card i.add-card-icon.overlap-plus-icon::after {
+            content: '';
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: var(--color-pink);
+            top: 50%;
+            left: 50%;
+            transform: translate(-30%, -40%);
+            opacity: 0.8;
+            z-index: -1;
+            transition: transform 0.3s ease;
+        }
+
+    .add-card:hover i.add-card-icon.overlap-plus-icon {
+        border-color: var(--color-pink);
+    }
+
+/* ✨ Book Actions */
+.book-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.book-card:hover .book-actions {
+    opacity: 1;
+}
+
+.action-btn {
+    background: #fff;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    transition: all 0.25s ease;
+    color: var(--color-deep-pink);
+}
+
+    .action-btn:hover {
+        transform: scale(1.15);
+        background: var(--color-pink);
+        color: white;
+    }
+
+.edit-btn {
+    color: var(--color-deep-pink);
+}
+
+.delete-btn {
+    color: var(--color-pink);
+}
+
+.text-muted strong {
+    color: var(--color-deep-pink);
+    font-size: 1rem;
+}
+
+.small.text-secondary {
+    font-weight: 500;
+}
+
+/* 🩷 Modal (Base Styles) */
+.modal-header {
+    background: linear-gradient(90deg, var(--color-deep-pink), var(--color-pink));
+    border-bottom: none;
+    color: #fff;
+    font-weight: 600;
+}
+
+.modal-content {
+    border-radius: 18px;
+    border: 1px solid var(--color-border-light);
+    box-shadow: var(--shadow-soft);
+}
+
+/* 💖 Loading Spin Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 1.2s linear infinite;
+}
+
+/* 💖 Close button in modal header */
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* 💕 Book Details Modal */
+.book-details-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+    .book-details-container img {
+        width: 280px;
+        border-radius: 1rem;
+        object-fit: cover;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+.book-details-info {
+    flex: 1;
+}
+
+    .book-details-info h2 {
+        color: var(--color-deep-pink);
+        font-weight: bold;
+    }
+
+    .book-details-info p {
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+    }
+
+    .book-details-info .badge {
+        background-color: var(--color-pink);
+        color: white;
+        border-radius: 1rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+/* 🌈 Buttons - Base Pink Button */
+.btn-pink {
+    background-color: var(--color-pink);
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+    .btn-pink:hover {
+        background-color: var(--color-deep-pink);
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(176, 78, 114, 0.25);
+        color: #fff;
+    }
+
+/* 🩷 CUSTOM PINK BUTTON - Primary action button */
+/* Maximum specificity to override Bootstrap */
+a.btn.btn-pink-custom,
+.btn.btn-pink-custom,
+a.btn-pink-custom,
+.btn-pink-custom {
+    background-color: var(--color-button-main) !important;
+    color: white !important;
+    border: 2px solid var(--color-button-main) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+}
+
+    a.btn.btn-pink-custom:hover,
+    .btn.btn-pink-custom:hover,
+    a.btn-pink-custom:hover,
+    .btn-pink-custom:hover,
+    a.btn.btn-pink-custom:focus,
+    .btn.btn-pink-custom:focus,
+    a.btn-pink-custom:focus,
+    .btn-pink-custom:focus,
+    a.btn.btn-pink-custom:active,
+    .btn.btn-pink-custom:active,
+    a.btn-pink-custom:active,
+    .btn-pink-custom:active {
+        background-color: var(--color-button-hover) !important;
+        border-color: var(--color-button-hover) !important;
+        color: white !important;
+        transform: scale(1.02) !important;
+        box-shadow: 0 4px 12px rgba(176, 78, 114, 0.25) !important;
+        text-decoration: none !important;
+    }
+
+/* Button size overrides with maximum specificity */
+a.btn-lg.btn-pink-custom,
+.btn-lg.btn-pink-custom {
+    font-size: 1.1rem !important;
+    padding: 0.6rem 1.3rem !important;
+}
+
+a.btn-sm.btn-pink-custom,
+.btn-sm.btn-pink-custom {
+    font-size: 1rem !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Badge with custom pink background */
+.bg-pink-custom {
+    background-color: var(--color-button-main) !important;
+    color: white !important;
+}
+
+/* 📱 Responsiveness */
+@media (max-width: 576px) {
+    .book-card, .add-card {
+        border-radius: 14px;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .btn-login, .btn-signup {
+        font-size: 0.9rem;
+        padding: 5px 12px;
+    }
+}
+
+/* ⭐️ Star Rating Styles */
+.star-rating {
+    font-size: 1.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+    .star-rating i {
+        transition: color 0.2s ease;
+    }
+
+        .star-rating i.rated.pink-theme {
+            color: var(--color-pink);
+            text-shadow: 0 0 5px rgba(255,143,177,0.5);
+        }
+
+.rated-star {
+    color: gold;
+}
+
+    .rated-star.pink-theme {
+        color: var(--color-pink) !important;
+        text-shadow: 0 0 4px rgba(255,143,177,0.4);
+    }
+
+/* 💖 Modal Details & Review System Styles */
+.modal-header-themed {
+    background: linear-gradient(90deg, var(--color-deep-pink), var(--color-pink)) !important;
+    color: white !important;
+    border-bottom: none;
+}
+
+    .modal-header-themed .modal-title {
+        color: white !important;
+    }
+
+/* Review Tab Styles */
+.tab-link-pink {
+    color: var(--color-deep-pink);
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active.tab-link-pink {
+    color: white;
+    background-color: var(--color-deep-pink) !important;
+    border-color: var(--color-deep-pink) !important;
+}
+
+/* Custom Background */
+.bg-light-pink-bg {
+    background-color: var(--color-hover-bg) !important;
+}
+
+/* Text Colors */
+.text-pink-dark {
+    color: var(--color-deep-pink) !important;
+}
+
+.text-pink {
+    color: var(--color-deep-pink) !important;
+}
+
+a.text-pink {
+    color: var(--color-deep-pink) !important;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+    a.text-pink:hover {
+        color: var(--color-pink) !important;
+        text-decoration: underline;
+    }
+
+/* Badge Styles */
+.badge.bg-pink-light {
+    background-color: var(--color-accent) !important;
+    color: var(--color-deep-pink) !important;
+}
+
+/* -------------------------------------- */
+/* 💖 LOGIN/REGISTER/FORGOT PASSWORD PAGE STYLES */
+/* -------------------------------------- */
+
+.auth-container {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border-light) !important;
+    padding: 2.5rem !important;
+    box-shadow: var(--shadow-soft) !important;
+    border-radius: 18px;
+}
+
+/* Floating Form Controls */
+.form-control:focus {
+    border-color: var(--color-border-light) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 143, 177, 0.25) !important;
+}
+
+/* -------------------------------------- */
+/* 🏠 HOME PAGE STYLES */
+/* -------------------------------------- */
+
+.home-card {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border-light) !important;
+    border-radius: 18px !important;
+    box-shadow: var(--shadow-soft) !important;
+}
+
+/* Stats heading */
+.col-lg-4 h3.h5 {
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.8rem !important;
+}
+
+.col-lg-4 h5 {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+}
+
+/* List items in stats */
+.list-group-item {
+    font-size: 1.05rem;
+    padding: 0.6rem 1rem;
+}
+
+    .list-group-item .badge {
+        font-size: 1.05rem;
+        padding: 0.45em 0.8em;
+        line-height: 1;
+    }
+
+/* Small text */
+p.small.text-muted {
+    font-size: 0.95rem !important;
+}
+
+/* Alert border */
+.alert.border-pink-light {
+    border-color: var(--color-border-light) !important;
+}
+
+/* Close button */
+.btn-close-white {
+    filter: invert(1);
+}
+
+/* Custom Pink Color Variables (Siguraduhin na ito ang colors na gusto mo) */
+:root {
+    --color-pink-primary: #f06292; /* Mas soft na pink (Default) */
+    --color-pink-dark: #ad1457;    /* Deep rose/darker pink */
+    --color-pink-light: #fce4ec;   /* Very light pink/off-white */
+}
+
+/* 1. Modal Container Enhancements */
+.modal-content {
+    border-radius: 1.5rem; /* Mas malaking rounded corners */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25); /* Mas malakas na shadow */
+    overflow: hidden; /* Para hindi lumabas ang corners ng header */
+}
+
+/* 2. Modal Header for Pink Theme */
+.custom-modal-header {
+    background-color: var(--color-pink-primary); /* Pink Background */
+    color: white; 
+    padding: 1.5rem 2rem; /* Mas malaking padding */
+    border-bottom: none; /* Tanggalin ang default border */
+}
+.custom-modal-header .modal-title {
+    letter-spacing: 0.5px; /* Konting spacing sa text */
+}
+
+/* 3. Custom Pink Button (Save changes) */
+.custom-pink-btn {
+    color: white;
+    background-color: var(--color-pink-dark); /* Gamitin ang darker pink para mas mag-pop */
+    border: 2px solid var(--color-pink-dark);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 2rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-pink-btn:hover {
+    color: var(--color-pink-dark);
+    background-color: white; 
+    border-color: var(--color-pink-dark);
+}
+
+/* 4. Form Control Focus Effect (Optional: Gawing pink ang focus highlight) */
+.form-control:focus {
+    border-color: var(--color-pink-primary);
+    box-shadow: 0 0 0 0.25rem rgba(240, 98, 146, 0.25); /* Light pink glow */
+}
+
+/* 5. Custom Text Color for Labels */
+.text-pink-dark {
+    color: var(--color-pink-dark) !important;
+}
+
+/* Modal Fade In Animation */
+#bookModal {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+    #bookModal .modal-dialog {
+        animation: slideDown 0.3s ease-in-out;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Close Animation */
+#bookModal.closing {
+    animation: fadeOut 0.3s ease-in-out;
+}
+
+    #bookModal.closing .modal-dialog {
+        animation: slideUp 0.3s ease-in-out;
+    }
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,78 @@
+﻿@model ReviewHall.Core.Models.EditBookViewModel
+
+@* Siguraduhin na ang _ValidationScriptsPartial ay nandoon para sa client-side validation *@
+<partial name="_ValidationScriptsPartial" />
+
+<form asp-action="Edit" method="post" id="editBookForm">
+
+    @* 🚀 CORRECTION: Nilipat ang BookId sa pinaka-umpisa ng Form. * @
+    @* Ito ang Hidden Field na nagdadala ng ID ng aklat na ini-edit. *@
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.BookId)
+
+    @* Modal Header - Custom Pink Theme *@
+    <div class="modal-header custom-modal-header text-white">
+        <h5 class="modal-title fw-bolder" id="editBookModalLabel">Edit Book Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    @* Modal Body - Enhanced Spacing and Font Styling *@
+    <div class="modal-body p-4 p-md-5">
+
+        @* TANGGALIN ITO: Inilipat na ang @Html.HiddenFor sa taas *@
+        @* @Html.HiddenFor(m => m.BookId) *@
+
+        <div class="mb-4">
+            <label asp-for="Title" class="form-label fw-semibold text-pink-dark"></label>
+            <input asp-for="Title" class="form-control form-control-lg rounded-3" />
+            <span asp-validation-for="Title" class="text-danger small mt-1 d-block"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="ISBN" class="form-label fw-semibold text-pink-dark"></label>
+            <input asp-for="ISBN" class="form-control rounded-3" />
+            <span asp-validation-for="ISBN" class="text-danger small mt-1 d-block"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Description" class="form-label fw-semibold text-pink-dark"></label>
+            <textarea asp-for="Description" class="form-control rounded-3" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger small mt-1 d-block"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <label asp-for="Genre" class="form-label fw-semibold text-pink-dark"></label>
+                <input asp-for="Genre" class="form-control rounded-3" />
+                <span asp-validation-for="Genre" class="text-danger small mt-1 d-block"></span>
+            </div>
+            <div class="col-md-6 mb-4">
+                <label asp-for="PublishedDate" class="form-label fw-semibold text-pink-dark"></label>
+                <input asp-for="PublishedDate" type="date" class="form-control rounded-3" />
+                <span asp-validation-for="PublishedDate" class="text-danger small mt-1 d-block"></span>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Author" class="form-label fw-semibold text-pink-dark"></label>
+            <input asp-for="Author" class="form-control rounded-3" />
+            <span asp-validation-for="Author" class="text-danger small mt-1 d-block"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="AuthorProfileImageUrl" class="form-label fw-semibold text-pink-dark"></label>
+            <input asp-for="AuthorProfileImageUrl" class="form-control rounded-3" />
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="CoverImageUrl" class="form-label fw-semibold text-pink-dark"></label>
+            <input asp-for="CoverImageUrl" class="form-control rounded-3" />
+        </div>
+    </div>
+
+    @* Modal Footer - Pink Submit Button *@
+    <div class="modal-footer justify-content-center border-0 p-4 pt-0">
+        <button type="button" class="btn btn-lg btn-outline-secondary rounded-pill me-3" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-lg custom-pink-btn rounded-pill">Save changes</button>
+    </div>
+</form>
